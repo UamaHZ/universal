@@ -3,3 +3,4 @@
 ###② 增加相册图片浏览器 PhotoWallActivity
 ###③ 单张图片提交 PhotoChoose
 ###④ 4张图片提交 FourPicturesChoose
+###④ 4张图片提交 FourPicturesChoose
