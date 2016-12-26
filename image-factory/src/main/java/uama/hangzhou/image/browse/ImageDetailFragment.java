@@ -3,7 +3,7 @@
  * Copyright (c) 16-6-27 下午3:48.
  */
 
-package uama.hangzhou.image.photochoose;
+package uama.hangzhou.image.browse;
 
 import android.content.Intent;
 import android.graphics.drawable.Animatable;

@@ -5,8 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/image"
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+        <!--android:id="@+id/image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+    <!--<uama.hangzhou.image.widget.MyGridView-->
+        <!--android:id="@+id/grid_view_publish_photo"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:horizontalSpacing="5dp"-->
+        <!--android:minHeight="95dp"-->
+        <!--android:numColumns="4"-->
+        <!--android:padding="@dimen/gap_long"-->
+        <!--android:scrollbars="none"-->
+        <!--android:verticalSpacing="11dp" />-->
+
+    <include
+        android:id="@+id/ll_upload_photo"
+        layout="@layout/upload_photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        />
+
 </RelativeLayout>

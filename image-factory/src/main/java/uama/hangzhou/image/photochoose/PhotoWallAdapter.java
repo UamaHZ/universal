@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uama.hangzhou.image.R;
+import uama.hangzhou.image.browse.ImagePagerActivity;
 import uama.hangzhou.image.util.SDCardImageLoader;
 
 

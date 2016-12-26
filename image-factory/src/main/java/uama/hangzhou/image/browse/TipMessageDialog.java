@@ -1,4 +1,4 @@
-package uama.hangzhou.image.photochoose;
+package uama.hangzhou.image.browse;
 
 import android.content.Context;
 import android.content.res.Configuration;
