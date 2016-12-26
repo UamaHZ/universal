@@ -7,5 +7,7 @@
 /build
 /captures
 .externalNativeBuild
-/bintrayImage.properties
-
+app/libs/
+app/src/main/res/drawable/
+image-factory/libs/
+libs/
