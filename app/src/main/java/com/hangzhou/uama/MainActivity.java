@@ -1,8 +1,10 @@
 package com.hangzhou.uama;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -10,6 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import uama.hangzhou.image.photochoose.FourPicturesChoose;
 import uama.hangzhou.image.widget.MyGridView;
+import uama.hangzhou.share.ShareView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -17,12 +20,21 @@ public class MainActivity extends AppCompatActivity {
     private MyGridView myGridView;
     private FourPicturesChoose fourPicturesChoose;
     ImageView image1,image2,image3,image4;
+    private ShareView shareView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(MainActivity.this);
         setContentView(R.layout.activity_main);
         init();
+        shareView=(ShareView)findViewById(R.id.share_view);
+        shareView.setDefaultJPMap(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),"ssss");
+        findViewById(R.id.show_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareView.setVisibility(View.VISIBLE);
+            }
+        });
 //        zoomDrawView = (SimpleDraweeView) findViewById(R.id.image);
 //        zoomDrawView.setImageURI(Uri.parse("http://g.hiphotos.baidu.com/image/pic/item/03087bf40ad162d9ec74553b14dfa9ec8a13cd7a.jpg"));
 //        zoomDrawView.setOnClickListener(new View.OnClickListener() {

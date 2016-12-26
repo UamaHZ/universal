@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/UamaUniversal.iml" filepath="$PROJECT_DIR$/UamaUniversal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/image-factory/image-factory.iml" filepath="$PROJECT_DIR$/image-factory/image-factory.iml" />
+      <module fileurl="file://$PROJECT_DIR$/share-help/share-help.iml" filepath="$PROJECT_DIR$/share-help/share-help.iml" />
     </modules>
   </component>
 </project>
