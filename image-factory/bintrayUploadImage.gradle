@@ -17,7 +17,7 @@ def projectRepositoryName = properties.getProperty("project.repositoryName")
 def projectName = properties.getProperty("project.name")
 def projectGroupId = properties.getProperty("project.groupId")
 def projectArtifactId = properties.getProperty("project.artifactId")
-def projectVersionName = android.defaultConfig.versionName
+def projectVersionName = properties.getProperty("project.version")
 def projectPackaging = properties.getProperty("project.packaging")
 def projectSiteUrl = properties.getProperty("project.siteUrl")
 def projectGitUrl = properties.getProperty("project.gitUrl")
@@ -50,6 +50,7 @@ install {
                 groupId projectGroupId
                 artifactId projectArtifactId
                 version projectVersionName
+                description bintrayDesc
                 packaging projectPackaging
                 url projectSiteUrl
                 licenses {
@@ -113,7 +114,7 @@ javadoc {
 *userOrg为bintray账号信息里面的Organization Id
 *repo为你创建的仓库名称
 * 如果上述两个字段写错了，则会出现下面类似的错误
-*Could not create package 'huangxuanheng/maven/fragmentstack': HTTP/1.1 404 Not Found [message:Repo 'maven' was not found]
+*Could not create package 'uama/maven/fragmentstack': HTTP/1.1 404 Not Found [message:Repo 'maven' was not found]
 *
 *
 * */
@@ -124,7 +125,6 @@ bintray {
     pkg {
         userOrg = bintrayOrganizationId
         repo = projectRepositoryName
-        description = bintrayDesc
         name = projectName
         websiteUrl = projectSiteUrl
         vcsUrl = projectGitUrl
