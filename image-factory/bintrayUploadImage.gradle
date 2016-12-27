@@ -128,6 +128,7 @@ bintray {
         name = projectName
         websiteUrl = projectSiteUrl
         vcsUrl = projectGitUrl
+        desc = bintrayDesc
         licenses = ["Apache-2.0"]
         publish = true
     }
