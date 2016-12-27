@@ -1,1 +1,1 @@
-include ':app', ':image-factory'
+include ':app', ':image-factory',':share-help'
