@@ -1,7 +1,6 @@
 package com.uama.utils;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 public class ToastUtil {
@@ -19,7 +18,7 @@ public class ToastUtil {
 //		Toast.makeText(context, info, Toast.LENGTH_SHORT).show();
     }
 
-    public static void show(Context context, @StringRes int info) {
+    public static void show(Context context,int info) {
         if (null == toast) {
             toast = Toast.makeText(context, info, Toast.LENGTH_SHORT);
             // toast.setGravity(Gravity.CENTER, 0, 0);
@@ -39,7 +38,7 @@ public class ToastUtil {
         toast.show();
     }
 
-    public static void showLong(Context context, @StringRes int info) {
+    public static void showLong(Context context, int info) {
         if (null == toast) {
             toast = Toast.makeText(context, info, Toast.LENGTH_LONG);
             // toast.setGravity(Gravity.CENTER, 0, 0);

@@ -37,22 +37,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ClassName:BitmapUtils <br/>
- * Function: bitmap工具类 Reason: TODO ADD REASON. <br/>
- * Date: 2014年10月10日 下午4:18:23 <br/>
+ * ClassName:BitmapUtils
+ * Function: bitmap工具类
+ * Date: 2014年10月10日 下午4:18:23
  * 
  * @author Administrator
  * @version
  * @since JDK 1.6
- * @see
  */
 public class BitmapUtils {
 	
 	/**
 	 * 获取图片文件的信息，是否旋转了90度，如果是则反转
-	 * 
-	 * @param bitmap 需要旋转的图片
-	 * @param path 图片的路径
 	 */
 	public static Bitmap reviewPicRotate(Bitmap bitmap, String path) {
 		int degree = readPictureDegree(path);
@@ -69,8 +65,7 @@ public class BitmapUtils {
 	/**
 	 * 解码图像，减少资源消耗
 	 * 
-	 * @param f
-	 * @return
+	 * param f
 	 */
 	public static Bitmap decodeFile(File f) {
 		try {
@@ -106,10 +101,8 @@ public class BitmapUtils {
 	
 	/**
 	 * 解码图像，减少内存消耗
-	 * 
-	 * @param f
-	 * @param requiredSize 需要的尺寸,当宽或者高的一半=requiredSize，不再解码
-	 * @return
+	 * param f
+	 * param requiredSize 需要的尺寸,当宽或者高的一半=requiredSize，不再解码
 	 */
 	public static Bitmap decodeFile(File f, int requiredSize) {
 		try {
@@ -178,9 +171,8 @@ public class BitmapUtils {
 	
 	/**
 	 * 保存图片为JPEG
-	 * 
-	 * @param bitmap
-	 * @param path
+	 * param bitmap
+	 * param path
 	 */
 	public static String saveJPGE_After(Bitmap bitmap, String path) {
 		File file = new File(path);
@@ -205,8 +197,7 @@ public class BitmapUtils {
 	/**
 	 * 读取图片的旋转角度，三星等手机会自动旋转90°，这个时候需要根据exif来进行旋转操作先
 	 * 
-	 * @param path
-	 * @return
+	 *param path
 	 */
 	public static int readPictureDegree(String path) {
 		int degree = 0;
@@ -233,10 +224,8 @@ public class BitmapUtils {
 	
 	/**
 	 * 更改角度
-	 * 
-	 * @param src 来源的bitmap
-	 * @param angle 旋转的角度
-	 * @return
+	 * param src 来源的bitmap
+	 * param angle 旋转的角度
 	 */
 	public static Bitmap changeDegree(Bitmap src, int angle) {
 		if (src == null) {
@@ -253,12 +242,10 @@ public class BitmapUtils {
 	
 	/**
 	 * 以CenterCrop方式resize图片
-	 * 
-	 * @param src 原始图片
-	 * @param destWidth 目标图片宽度
-	 * @param destHeight 目标图片高度
-	 * @param angle 旋转角度，根据图片的exif来进行处理
-	 * @return
+	 * param src 原始图片
+	 * param destWidth 目标图片宽度
+	 * param destHeight 目标图片高度
+	 * param angle 旋转角度，根据图片的exif来进行处理
 	 */
 	public static Bitmap resizeBitmapByCenterCrop(Bitmap src, int destWidth, int destHeight, boolean bool, int angle) {
 		if (src == null || destWidth == 0 || destHeight == 0) {
@@ -437,8 +424,7 @@ public class BitmapUtils {
 	/**
 	 * 转换图片成圆形
 	 *
-	 * @param bitmap 传入Bitmap对象
-	 * @return
+	 * param bitmap 传入Bitmap对象
 	 */
 	public static Bitmap toRoundBitmap(Bitmap bitmap) {
 		int width = bitmap.getWidth();
@@ -561,9 +547,8 @@ public class BitmapUtils {
 	/**
 	 * 图片旋转
 	 *
-	 * @param angle
-	 * @param bitmap
-	 * @return
+	 * param angle
+	 * param bitmap
 	 */
 	public static Bitmap rotaingImageView(int angle, Bitmap bitmap) {
 		// 旋转图片 动作

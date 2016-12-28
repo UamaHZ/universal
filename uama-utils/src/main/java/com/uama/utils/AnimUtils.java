@@ -1,7 +1,6 @@
 package com.uama.utils;
 
 import android.content.Context;
-import android.support.annotation.AnimRes;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -13,10 +12,10 @@ import android.view.animation.TranslateAnimation;
 
 /**
  * 
- * @author Cosmo Jiang
- * @email ruchao.jiang@uama.com.cn
- * @date 2014年9月10日 上午11:34:32
- * @desc 动画辅助类
+ * author Cosmo Jiang
+ * email ruchao.jiang@uama.com.cn
+ * date 2014年9月10日 上午11:34:32
+ * desc 动画辅助类
  *
  */
 public class AnimUtils {
@@ -153,7 +152,7 @@ public class AnimUtils {
 
 
 
-	public static void startAnimations(Context context, View view, @AnimRes int animId, int duration){
+	public static void startAnimations(Context context, View view,int animId, int duration){
 		Animation animation= AnimationUtils.loadAnimation(context,animId);
 		animation.setDuration(duration);
 		animation.setFillAfter(true);
@@ -161,7 +160,7 @@ public class AnimUtils {
 		view.startAnimation(animation);
 	}
 
-	public static void startAnimation(Context context,View view, @AnimRes int animId,int duration){
+	public static void startAnimation(Context context,View view,int animId,int duration){
 		Animation animation= AnimationUtils.loadAnimation(context,animId);
 		animation.setDuration(duration);
 		view.startAnimation(animation);
@@ -179,7 +178,7 @@ public class AnimUtils {
 		view.startAnimation(animation);
 	}
 
-	public static void startAnimation(Context context, View view, @AnimRes int animId){
+	public static void startAnimation(Context context, View view, int animId){
 		Animation animation= AnimationUtils.loadAnimation(context,animId);
 		view.startAnimation(animation);
 	}

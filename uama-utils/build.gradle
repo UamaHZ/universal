@@ -28,12 +28,13 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
 }
-task makeJar(type: Copy) {
-    delete 'build/libs/UamaUtils_1.0.0.jar'
-    from('build/intermediates/bundles/release/')
-    into('build/libs/')
-    include('classes.jar')
-    rename ('classes.jar', 'UamaUtils_1.0.1.jar')
-}
-
-makeJar.dependsOn(build)
+apply from: "bintrayUploadUtil.gradle"
+//task makeJar(type: Copy) {
+//    delete 'build/libs/UamaUtils_1.0.0.jar'
+//    from('build/intermediates/bundles/release/')
+//    into('build/libs/')
+//    include('classes.jar')
+//    rename ('classes.jar', 'UamaUtils_1.0.1.jar')
+//}
+//
+//makeJar.dependsOn(build)
