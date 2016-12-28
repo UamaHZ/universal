@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/image-factory" />
             <option value="$PROJECT_DIR$/share-help" />
+            <option value="$PROJECT_DIR$/uama-utils" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

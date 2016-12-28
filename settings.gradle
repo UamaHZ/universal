@@ -1,1 +1,1 @@
-include ':app', ':image-factory',':share-help'
+include ':app', ':image-factory', ':share-help', ':uama-utils'
