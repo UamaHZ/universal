@@ -1,5 +1,5 @@
-# UamaUniversal
-##image-factory
+# ***UamaUniversal***
+##*image-factory*
 需要文件读取权限
 需要相机权限
 ###① 增加图片查看器 ImagePagerActivity
@@ -14,6 +14,5 @@
 ###⑤ 图片压缩工具类ImageSword
 使用方式：调用sword()返回file,然后直接上传
 
-##
-##uama-utils
-##share-help
+##*uama-utils*
+##*share-help*
