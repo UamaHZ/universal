@@ -8,6 +8,7 @@ package uama.hangzhou.image.browse;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -152,12 +152,12 @@ public class ImageDetailFragment extends Fragment {
         photoDraweeView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                TipMessageDialog.showSaveMessage(getContext(), new TipMessageDialog.OnItemClickListener() {
-                    @Override
-                    public void onItemClick() {
-                        savePicture(mImageUrl);
-                    }
-                });
+                    TipMessageDialog.showSaveMessage(getContext(), new TipMessageDialog.OnItemClickListener() {
+                        @Override
+                        public void onItemClick() {
+                            savePicture(mImageUrl);
+                        }
+                    });
                 return true;
             }
         });
