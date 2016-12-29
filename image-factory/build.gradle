@@ -9,9 +9,6 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -29,4 +26,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.facebook.fresco:fresco:0.11.0'
 }
-apply from: "bintrayUploadImage.gradle"
+apply from: "bintrayUpload.gradle"
