@@ -204,8 +204,8 @@ public class ShareView extends RelativeLayout implements View.OnClickListener {
             tx_msg.setText(msgShareTx);
         }
 
-        if(isMisMsg)share_linear.setVisibility(GONE);
-        else share_linear.setVisibility(VISIBLE);
+        if(isMisMsg)share_msg.setVisibility(GONE);
+        else share_msg.setVisibility(VISIBLE);
 
         if(txColor!=0){
             tx_weixin.setTextColor(txColor);

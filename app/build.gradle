@@ -26,5 +26,5 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile project(path: ':image-factory')
-    compile project(':share-help')
+    compile project(':share-factory')
 }
