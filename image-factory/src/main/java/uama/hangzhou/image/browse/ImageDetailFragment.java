@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -55,13 +56,15 @@ public class ImageDetailFragment extends Fragment {
     private boolean loadSuccess;
     private PipelineDraweeControllerBuilder controllerBuilder;
     private Toast mToast;
-    private static String FilePackagePath = Environment.getExternalStorageDirectory()+ File.separator + "uama"+ File.separator+"download";
+    private static String FilePackagePath = Environment.getExternalStorageDirectory() + File.separator + "uama" + File.separator + "download";
+    private boolean canSave;
 
-    public static ImageDetailFragment newInstance(String imageUrl) {
+    public static ImageDetailFragment newInstance(String imageUrl, boolean canSave) {
         final ImageDetailFragment f = new ImageDetailFragment();
 
         final Bundle args = new Bundle();
         args.putString("url", imageUrl);
+        args.putBoolean("canSave", canSave);
         f.setArguments(args);
 
         return f;
@@ -71,6 +74,7 @@ public class ImageDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mImageUrl = getArguments() != null ? getArguments().getString("url") : null;
+        canSave = getArguments() == null || getArguments().getBoolean("canSave");
     }
 
     @Override
@@ -122,42 +126,45 @@ public class ImageDetailFragment extends Fragment {
         photoDraweeView.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                if(!loadSuccess){
+                if (!loadSuccess) {
                     controllerBuilder.setImageRequest(request);
                     photoDraweeView.setController(controllerBuilder.build());
                     progressBar.setVisibility(View.VISIBLE);
                     return;
                 }
-                try{
+                try {
                     getActivity().finish();
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                 }
             }
         });
         photoDraweeView.setOnViewTapListener(new OnViewTapListener() {
             @Override
             public void onViewTap(View view, float x, float y) {
-                if(!loadSuccess){
+                if (!loadSuccess) {
                     controllerBuilder.setImageRequest(request);
                     photoDraweeView.setController(controllerBuilder.build());
                     progressBar.setVisibility(View.VISIBLE);
                     return;
                 }
-                try{
+                try {
                     getActivity().finish();
-                }catch (NullPointerException e){}
+                } catch (NullPointerException e) {
+                }
             }
         });
 
         photoDraweeView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if(canSave){
                     TipMessageDialog.showSaveMessage(getContext(), new TipMessageDialog.OnItemClickListener() {
                         @Override
                         public void onItemClick() {
                             savePicture(mImageUrl);
                         }
                     });
+                }
                 return true;
             }
         });
@@ -178,7 +185,7 @@ public class ImageDetailFragment extends Fragment {
         new Thread() {
             public void run() {
                 try {
-                    String filepath = FilePackagePath + File.separator+ getLocalTimeName();
+                    String filepath = FilePackagePath + File.separator + getLocalTimeName();
                     URL url = new URL(urlPath);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setConnectTimeout(6 * 1000);  // 注意要设置超时，设置时间不要超过10秒，避免被android系统回收
@@ -193,7 +200,7 @@ public class ImageDetailFragment extends Fragment {
                     readAsFile(inSream, new File(filepath), handler);
                     Intent mediaScanIntent = new Intent(
                             Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    File file = new File(filepath+ getLocalTimeName());
+                    File file = new File(filepath + getLocalTimeName());
                     Uri contentUri = Uri.fromFile(file);
                     mediaScanIntent.setData(contentUri);
                     getActivity().sendBroadcast(mediaScanIntent);
@@ -216,7 +223,7 @@ public class ImageDetailFragment extends Fragment {
         Message msg = new Message();
         msg.what = 1;
         Bundle bundle = new Bundle();
-        bundle.putString("tip",file.getAbsolutePath());
+        bundle.putString("tip", file.getAbsolutePath());
         msg.setData(bundle);
         handler.sendMessage(msg);
         outStream.close();
@@ -230,9 +237,9 @@ public class ImageDetailFragment extends Fragment {
                     showTips("下载失败");
                     break;
                 case 1:
-                    if(msg.getData() != null && msg.getData().getString("tip") != null){
-                        showTips("图片成功保存到"+msg.getData().getString("tip"));
-                    }else{
+                    if (msg.getData() != null && msg.getData().getString("tip") != null) {
+                        showTips("图片成功保存到" + msg.getData().getString("tip"));
+                    } else {
                         showTips("保存成功！");
                     }
                     break;
@@ -242,21 +249,21 @@ public class ImageDetailFragment extends Fragment {
 
     public void showTips(String msg) {
         if (mToast == null) {
-            mToast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
+            mToast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
         } else {
             mToast.cancel();
-            mToast.makeText(getActivity(),msg, Toast.LENGTH_SHORT).show();
+            mToast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
         }
     }
 
     //获取保存图片的时间命名
-    public static String getLocalTimeName(){
+    public static String getLocalTimeName() {
         String dataStr = "";
         String str = "";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss", Locale.CHINA);
         Date curDate = new Date(System.currentTimeMillis());
         str = formatter.format(curDate);
-        dataStr = "Uama_"+str.substring(0,4)+"_"+str.substring(4,6)+"_"+str.substring(6,8)+"_"+str.substring(8,14)+"_"+ UUID.randomUUID()+".jpg";
+        dataStr = "Uama_" + str.substring(0, 4) + "_" + str.substring(4, 6) + "_" + str.substring(6, 8) + "_" + str.substring(8, 14) + "_" + UUID.randomUUID() + ".jpg";
         return dataStr;
     }
 }

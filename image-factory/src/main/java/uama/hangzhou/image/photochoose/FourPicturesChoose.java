@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -131,6 +132,7 @@ public class FourPicturesChoose {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
         intent.putExtra(PhotoWallActivity.SelectedCounts, imageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, 4);
+        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, ContextCompat.getColor(activity,R.color.test));
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 

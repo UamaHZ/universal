@@ -118,6 +118,7 @@ public class PhotoWallAdapter extends BaseAdapter {
                 imageList.add("file://" + filePath);
                 Intent intent = new Intent(context, ImagePagerActivity.class);
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);
+                intent.putExtra(ImagePagerActivity.CAN_SAVE, false);
                 intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) imageList);
                 context.startActivity(intent);
             }
