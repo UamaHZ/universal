@@ -15,4 +15,17 @@
 使用方式：调用sword()返回file,然后直接上传
 
 ##*uama-utils*
-##*share-help*
+##*share-factory*
+分享注意，使用最新版友盟
+1：分离了微信支付的jar包，需要导入支付jar包，libammsdk.jar
+2：使用远程依赖xxx，删除umeng_social_sdk.jar，本地social_sdk_library_project依赖
+3：支持图片/纯文本/自定义分享功能
+4：支持自定义样式or直接引用目前的分享view（可修改图片，文字颜色，显示隐藏短信分享，默认显示短信分享）
+
+需要文件读取权限，没有给予读取权限，初始化ShareView控件会在6.0自动请求读取权限
+###
+1：创建并注测WXEntryActivity，并在mainfest中初始化友盟key
+2：Application中初始化QQ或者微信key
+3：布局中引入ShreView,在activity中使用setDefaultJPMap()/setDefaultShareContentWithMsg(),将需分享的内容放入。ps：开放了自定义分享，只用使用setInterShare（）实现InterShare即可；
+4：分享时，让控件可见即可。
+
