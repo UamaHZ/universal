@@ -33,21 +33,21 @@ public class ImagePagerActivity extends FragmentActivity {
     public static final String EXTRA_IMAGE_INDEX = "image_index";
     public static final String EXTRA_IMAGE_URLS = "image_urls";
     public static final String FROM_PHOTO_WALL = "FROM_PHOTO_WALL";
+    public static final String CAN_SAVE = "CAN_SAVE";
     private ImageViewPager mPager;
-    private int pagerPosition;
     private TextView indicator;
-    private boolean from_photo_wall = false;
+    private boolean from_photo_wall;
+    private boolean canSave;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(ImagePagerActivity.this);
         setContentView(R.layout.image_detail_pager);
-
-        pagerPosition = 0;
-        pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
-       List<String> urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
-        from_photo_wall = getIntent().getBooleanExtra(FROM_PHOTO_WALL,false);
+        int pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
+        List<String> urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
+        from_photo_wall = getIntent().getBooleanExtra(FROM_PHOTO_WALL, false);
+        canSave = getIntent().getBooleanExtra(CAN_SAVE,true);
         mPager = (ImageViewPager) findViewById(R.id.pager);
         ImagePagerAdapter mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), urls);
         mPager.setAdapter(mAdapter);
@@ -56,7 +56,7 @@ public class ImagePagerActivity extends FragmentActivity {
         CharSequence text = getString(R.string.viewpager_indicator, 1, mPager.getAdapter().getCount());
         indicator.setText(text);
         // 更新下标
-        mPager.setOnPageChangeListener(new OnPageChangeListener() {
+        mPager.addOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
             public void onPageScrollStateChanged(int arg0) {
@@ -87,9 +87,9 @@ public class ImagePagerActivity extends FragmentActivity {
 
     private class ImagePagerAdapter extends FragmentStatePagerAdapter {
 
-        public List<String> fileList;
+        List<String> fileList;
 
-        public ImagePagerAdapter(FragmentManager fm, List<String> fileList) {
+        ImagePagerAdapter(FragmentManager fm, List<String> fileList) {
             super(fm);
             this.fileList = fileList;
         }
@@ -102,10 +102,10 @@ public class ImagePagerActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             String url = fileList.get(position);
-            if(from_photo_wall){
+            if (from_photo_wall) {
                 url = fileList.get(position);
             }
-            return ImageDetailFragment.newInstance(url);
+            return ImageDetailFragment.newInstance(url,canSave);
         }
 
     }

@@ -12,8 +12,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +25,8 @@ import uama.hangzhou.image.R;
 
 
 /**
- * 选择照片页面
- * Created by gujiajia
+ * 选择图片页面
+ * Created by GuJiaJia
  */
 public class PhotoWallActivity extends FragmentActivity {
     TextView albumTitleBarCancel;
@@ -37,11 +39,18 @@ public class PhotoWallActivity extends FragmentActivity {
     public static String SelectedCounts = "SelectCounts";
     private Toast mToast;
     private ArrayList<String> selectedImageList;
+    private RelativeLayout title;
+    public static String PHOTO_WALL_COLOR = "PHOTO_WALL_COLOR";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_wall);
+        int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR,-1);//必须为资源
+        title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
+        if(titleColor != -1){
+            title.setBackgroundColor(titleColor);
+        }
         albumTitleBarCancel = (TextView) findViewById(R.id.album_title_bar_cancel);
         albumTitleBarConfirm = (TextView) findViewById(R.id.album_title_bar_confirm);
         albumTitleBarCancel.setOnClickListener(new View.OnClickListener() {
