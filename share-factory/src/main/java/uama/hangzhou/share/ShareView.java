@@ -1,12 +1,8 @@
 package uama.hangzhou.share;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -14,26 +10,21 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.umeng.socialize.ShareContent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by jams_zhen on 2016/12/23.
+ * user by guozhen
+ * use for share
+ * link 997558595@qq.com
  */
-
 public class ShareView extends RelativeLayout implements View.OnClickListener {
     private RelativeLayout my_share;
-    private LinearLayout share_weixin;
-    private LinearLayout share_qq;
-    private LinearLayout share_msg;
     private View view_back;
-    private LinearLayout share_linear;
+
+    private View share_linear;
 
     private ImageView img_weixin;
     private ImageView img_qq;
@@ -160,15 +151,14 @@ public class ShareView extends RelativeLayout implements View.OnClickListener {
      * 初始化点击事件
      */
     private void init() {
-         checkExternalPermission();
+
         defaultShareHelp = new DefaultShareHelp(getContext());
         View view = View.inflate(getContext(), R.layout.share_activity, this);
         my_share = (RelativeLayout) view.findViewById(R.id.my_share);
-        share_weixin = (LinearLayout) view.findViewById(R.id.share_weixin);
-        share_qq = (LinearLayout) view.findViewById(R.id.share_qq);
-        share_msg = (LinearLayout) view.findViewById(R.id.share_msg);
         view_back=view.findViewById(R.id.share_linear);
-        share_linear=(LinearLayout)view.findViewById(R.id.share_linear);
+        share_linear=view.findViewById(R.id.share_linear);
+
+        View share_msg=view.findViewById(R.id.share_msg);
 
         img_weixin=(ImageView)view.findViewById(R.id.img_weixin);
         img_qq=(ImageView)view.findViewById(R.id.img_qq);
@@ -179,9 +169,9 @@ public class ShareView extends RelativeLayout implements View.OnClickListener {
         tx_msg=(TextView)view.findViewById(R.id.tx_msg);
 
         my_share.setOnClickListener(this);
-        share_msg.setOnClickListener(this);
-        share_qq.setOnClickListener(this);
-        share_weixin.setOnClickListener(this);
+        view.findViewById(R.id.share_qq).setOnClickListener(this);
+        view.findViewById(R.id.share_msg).setOnClickListener(this);
+        view.findViewById(R.id.share_weixin).setOnClickListener(this);
 
         //设置资源
         if(weixinShareImgRes!=0){
@@ -301,16 +291,4 @@ public class ShareView extends RelativeLayout implements View.OnClickListener {
         });
     }
 
-    public boolean checkExternalPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            List<String> permissionsNeeded = new ArrayList<>();
-            permissionsNeeded.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            permissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            ActivityCompat.requestPermissions((Activity) getContext(),permissionsNeeded.toArray(new String[2]), 1991);
-            return false;
-        }else {
-            return true;
-        }
-    }
 }
