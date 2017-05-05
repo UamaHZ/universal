@@ -8,7 +8,6 @@ package uama.hangzhou.image.browse;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -80,7 +79,7 @@ public class ImageDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.image_detail_fragment, container, false);
+        final View v = inflater.inflate(R.layout.uimage_image_detail_fragment, container, false);
 
         if (mImageUrl == null)
             return v;

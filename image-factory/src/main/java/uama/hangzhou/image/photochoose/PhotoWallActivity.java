@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
@@ -45,7 +44,7 @@ public class PhotoWallActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.photo_wall);
+        setContentView(R.layout.uimage_photo_wall);
         int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR,-1);//必须为资源
         title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
         if(titleColor != -1){

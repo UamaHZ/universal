@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="font_main">#333333</color>
+    <color name="divider_line">#D1D1D1</color>
+    <color name="main_theme">#45b2ff</color>
+    <color name="white_background">#ffffff</color>
+    <color name="line_color">#aaaaaa</color>
+    <color name="main_background">#acc43d</color>
+    <color name="gray_text">#adadad</color>
+    <color name="black">#000000</color>
+    <color name="gray_background">#ebebeb</color>
+    <color name="help_font_color">#aaaaaa</color>
+    <color name="dark_bg_70p">#bb000000</color>
+    <color name="common_bg">#f0f0f3</color>
+    <color name="black_bg">#000000</color>
+    <color name="quality_focused_color">#448cf3</color>
+    <color name="transparent">#00000000</color>
+    <color name="font_hint">#aaaaaa</color>
+    <color name="universal_red">#45b2ff</color>
+    <color name="committee_button_red">#45b2ff</color>
+</resources>

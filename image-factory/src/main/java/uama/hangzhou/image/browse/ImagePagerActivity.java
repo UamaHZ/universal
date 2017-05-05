@@ -43,7 +43,7 @@ public class ImagePagerActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(ImagePagerActivity.this);
-        setContentView(R.layout.image_detail_pager);
+        setContentView(R.layout.uimage_image_detail_pager);
         int pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
         List<String> urls = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URLS);
         from_photo_wall = getIntent().getBooleanExtra(FROM_PHOTO_WALL, false);
@@ -53,7 +53,7 @@ public class ImagePagerActivity extends FragmentActivity {
         mPager.setAdapter(mAdapter);
         indicator = (TextView) findViewById(R.id.indicator);
 
-        CharSequence text = getString(R.string.viewpager_indicator, 1, mPager.getAdapter().getCount());
+        CharSequence text = getString(R.string.uimage_viewpager_indicator, 1, mPager.getAdapter().getCount());
         indicator.setText(text);
         // 更新下标
         mPager.addOnPageChangeListener(new OnPageChangeListener() {
@@ -68,7 +68,7 @@ public class ImagePagerActivity extends FragmentActivity {
 
             @Override
             public void onPageSelected(int arg0) {
-                CharSequence text = getString(R.string.viewpager_indicator, arg0 + 1, mPager.getAdapter().getCount());
+                CharSequence text = getString(R.string.uimage_viewpager_indicator, arg0 + 1, mPager.getAdapter().getCount());
                 indicator.setText(text);
             }
 

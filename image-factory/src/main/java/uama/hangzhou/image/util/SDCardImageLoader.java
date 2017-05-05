@@ -229,7 +229,7 @@ public class SDCardImageLoader {
                     if (bmp != null) {
                         imageView.setImageBitmap(bmp);
                     } else {
-                        imageView.setImageResource(R.mipmap.empty_photo);
+                        imageView.setImageResource(R.mipmap.uimage_empty_photo);
                     }
                 }
             }
@@ -240,7 +240,7 @@ public class SDCardImageLoader {
                 imageView.setImageBitmap(bmp);
             }
         } else {
-            imageView.setImageResource(R.mipmap.empty_photo);
+            imageView.setImageResource(R.mipmap.uimage_empty_photo);
         }
 
     }

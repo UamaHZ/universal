@@ -74,7 +74,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.publish_gridview_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.uimage_publish_gridview_item, parent, false);
             viewHolder.ivPic = (ImageView) convertView.findViewById(R.id.iv_grid_item);
             convertView.setTag(viewHolder);
         } else {
@@ -92,7 +92,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
                 viewHolder.ivPic.setVisibility(View.GONE);
             } else {
                 viewHolder.ivPic.setVisibility(View.VISIBLE);
-                viewHolder.ivPic.setImageResource(R.mipmap.publish_add_photo);
+                viewHolder.ivPic.setImageResource(R.mipmap.uimage_publish_add_photo);
             }
         }
         setRelativeLayoutWH(viewHolder.ivPic, height, height);
@@ -104,7 +104,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
                     DeviceUtils.closeKeyBoard((Activity)mContext);
                     showChooseMenu.show();
                 } else {
-                    String strArray[] = {mContext.getString(R.string.delete)};
+                    String strArray[] = {mContext.getString(R.string.uimage_delete)};
                     MessageDialog.showBottomMenu(mContext, strArray, new MessageDialog.MenuDialogOnItemClickListener() {
                         @Override
                         public void onItemClick(int index) {

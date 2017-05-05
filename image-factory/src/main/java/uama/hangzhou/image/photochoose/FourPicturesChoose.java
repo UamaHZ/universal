@@ -77,9 +77,9 @@ public class FourPicturesChoose {
     public void showPopupWindow(final int position) {
         final String strArray[];
         if (position < imageList.size()) {
-            strArray = new String[]{activity.getString(R.string.delete)};
+            strArray = new String[]{activity.getString(R.string.uimage_delete)};
         } else {
-            strArray = new String[]{activity.getString(R.string.choose_photo), activity.getString(R.string.take_camera)};
+            strArray = new String[]{activity.getString(R.string.uimage_choose_photo), activity.getString(R.string.uimage_take_camera)};
         }
         MessageDialog.showBottomMenu(activity, strArray, new MessageDialog.MenuDialogOnItemClickListener() {
             @Override
@@ -106,10 +106,10 @@ public class FourPicturesChoose {
 
     //刷新选中的图片
     private void upDateImageGroup() {
-        imgViewList[0].setImageResource(R.mipmap.camera_default);
-        imgViewList[1].setImageResource(R.mipmap.camera_default_ext);
-        imgViewList[2].setImageResource(R.mipmap.camera_default_ext);
-        imgViewList[3].setImageResource(R.mipmap.camera_default_ext);
+        imgViewList[0].setImageResource(R.mipmap.uimage_camera_default);
+        imgViewList[1].setImageResource(R.mipmap.uimage_camera_default_ext);
+        imgViewList[2].setImageResource(R.mipmap.uimage_camera_default_ext);
+        imgViewList[3].setImageResource(R.mipmap.uimage_camera_default_ext);
         for (int i = 0; i < imageList.size(); i++) {
             imgViewList[i].setImageBitmap(ImageSword.getImage(imageList.get(i)));
         }
@@ -132,7 +132,7 @@ public class FourPicturesChoose {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
         intent.putExtra(PhotoWallActivity.SelectedCounts, imageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, 4);
-        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, ContextCompat.getColor(activity,R.color.test));
+        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, ContextCompat.getColor(activity,R.color.uimage_test));
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 

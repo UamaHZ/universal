@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/uimage_white"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/uimage_common_margin" >
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_choose_img1"
+            android:layout_width="@dimen/uimage_photo_wight"
+            android:layout_height="@dimen/uimage_photo_height"
+            android:layout_gravity="center"
+            android:background="@mipmap/uimage_camera_default"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_choose_img2"
+            android:layout_width="@dimen/uimage_photo_wight"
+            android:layout_height="@dimen/uimage_photo_height"
+            android:layout_gravity="center"
+            android:background="@mipmap/uimage_camera_default_ext"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_choose_img3"
+            android:layout_width="@dimen/uimage_photo_wight"
+            android:layout_height="@dimen/uimage_photo_height"
+            android:layout_gravity="center"
+            android:background="@mipmap/uimage_camera_default_ext"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/photo_choose_img4"
+            android:layout_width="@dimen/uimage_photo_wight"
+            android:layout_height="@dimen/uimage_photo_height"
+            android:layout_gravity="center"
+            android:background="@mipmap/uimage_camera_default_ext"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+
+</LinearLayout>

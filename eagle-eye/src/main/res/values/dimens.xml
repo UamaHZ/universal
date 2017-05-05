@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_bar_height">49dp</dimen>
+    <dimen name="top_left_width">65dp</dimen>
+    <dimen name="font_content_size">15sp</dimen><!--一般正文，内容主体-->
+    <dimen name="font_title_bar_size">18sp</dimen>
+    <dimen name="common_margin">9dp</dimen>
+    <dimen name="divide_line">0.5dp</dimen>
+    <dimen name="htext">15sp</dimen>
+</resources>

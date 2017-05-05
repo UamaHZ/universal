@@ -29,7 +29,7 @@ class MessageDialog {
     private static android.app.Dialog ShowBottomMenuDialog(Context context, String[] str, final MenuDialogOnItemClickListener menuDialogClickListener) {
         final android.app.Dialog dialog = new android.app.Dialog(context, R.style.DialogStyle);
         dialog.setCancelable(true);
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_popupwindow_bottommenu, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.uimage_layout_popupwindow_bottommenu, null);
         dialog.setContentView(view);
         TextView menu4 = (TextView) view.findViewById(R.id.pop_5);
         TextView menu3 = (TextView) view.findViewById(R.id.pop_4);

@@ -52,7 +52,7 @@ public class PhotoChoose {
         if (activity == null) {
             return;
         }
-        String strArray[] = {activity.getString(R.string.choose_photo), activity.getString(R.string.take_camera)};
+        String strArray[] = {activity.getString(R.string.uimage_choose_photo), activity.getString(R.string.uimage_take_camera)};
         MessageDialog.showBottomMenu(activity, strArray, new MessageDialog.MenuDialogOnItemClickListener() {
             @Override
             public void onItemClick(int index) {

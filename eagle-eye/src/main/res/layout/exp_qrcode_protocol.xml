@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include layout="@layout/head_save_view" />
+
+        <ProgressBar
+            android:id="@+id/loadingImageView"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/white"
+            android:max="100"
+            android:progressDrawable="@drawable/webview_progress_style" />
+
+        <WebView
+            android:id="@+id/protocol"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0" />
+
+        <TextView
+            android:id="@+id/agree"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/up_date_confirm"
+            android:gravity="center"
+            android:text="我已阅读并同意"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/layout_introduce"
+        android:visibility="gone"
+        layout="@layout/layout_eagle_eye_introduce" />
+</RelativeLayout>

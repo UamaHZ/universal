@@ -23,7 +23,7 @@ public class TipMessageDialog {
     private static android.app.Dialog ShowBottomMenuDialog(Context context, final OnItemClickListener itemClickListener) {
         final android.app.Dialog dialog = new android.app.Dialog(context, R.style.DialogStyle);
         dialog.setCancelable(true);
-        View view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog_menu, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.uimage_bottom_dialog_menu, null);
         dialog.setContentView(view);
         TextView savePicture = (TextView) view.findViewById(R.id.pop_save_tv);
         savePicture.setOnClickListener(new View.OnClickListener() {

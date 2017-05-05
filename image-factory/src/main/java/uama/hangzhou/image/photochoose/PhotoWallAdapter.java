@@ -67,7 +67,7 @@ public class PhotoWallAdapter extends BaseAdapter {
 
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.photo_wall_item, parent,false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.uimage_photo_wall_item, parent,false);
             holder = new ViewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.photo_wall_item_photo);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.photo_wall_item_cb);
@@ -79,7 +79,7 @@ public class PhotoWallAdapter extends BaseAdapter {
         boolean bSelected = isSelected(filePath);
 
         if (bSelected) {
-            holder.imageView.setColorFilter(context.getResources().getColor(R.color.image_checked_bg));
+            holder.imageView.setColorFilter(context.getResources().getColor(R.color.uimage_image_checked_bg));
         } else {
             holder.imageView.setColorFilter(null);
         }
@@ -100,7 +100,7 @@ public class PhotoWallAdapter extends BaseAdapter {
                     } else {
                         selectedImageList.add(filePath);
                         holder.checkBox.setChecked(true);
-                        holder.imageView.setColorFilter(context.getResources().getColor(R.color.image_checked_bg));
+                        holder.imageView.setColorFilter(context.getResources().getColor(R.color.uimage_image_checked_bg));
                     }
                 } else {
                     selectedImageList.remove(filePath);
