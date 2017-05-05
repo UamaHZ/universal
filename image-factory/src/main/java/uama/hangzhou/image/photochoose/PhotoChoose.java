@@ -1,13 +1,19 @@
 package uama.hangzhou.image.photochoose;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.constant.Constants;
@@ -36,6 +42,24 @@ public class PhotoChoose {
         init();
     }
 
+    @PermissionYes(300)
+    private void getCamera(List<String> grantedPermissions) {
+        goToTakePhoto();
+    }
+
+    @PermissionNo(300)
+    private void noCamera(List<String> grantedPermissions) {
+    }
+
+    @PermissionYes(301)
+    private void getExternal(List<String> grantedPermissions) {
+        goToChooseImage();
+    }
+
+    @PermissionNo(301)
+    private void noExternal(List<String> grantedPermissions) {
+    }
+
     private void init() {
         mImageList = new ArrayList<>();
         imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList, maxCounts, new PublishImageGridVIewAdapter.ShowChooseMenu() {
@@ -58,10 +82,19 @@ public class PhotoChoose {
             public void onItemClick(int index) {
                 switch (index) {
                     case 1:
-                        goToChooseImage();
+                        AndPermission.with(activity)
+                                .requestCode(301)
+                                .callback(PhotoChoose.this)
+                                .permission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .start();
                         break;
                     case 2:
-                        goToTakePhoto();
+                        AndPermission.with(activity)
+                                .requestCode(300)
+                                .callback(PhotoChoose.this)
+                                .permission(Manifest.permission.CAMERA,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .start();
                         break;
                 }
             }
@@ -74,7 +107,7 @@ public class PhotoChoose {
         mNewImageFilePath = CacheFileUtils.getUpLoadPhotosPath();
         ContentValues contentValues = new ContentValues(1);
         contentValues.put(MediaStore.Images.Media.DATA, new File(mNewImageFilePath).getAbsolutePath());
-        Uri uri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
+        Uri uri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 //        Uri uri = Uri.fromFile(new File(mNewImageFilePath));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.putExtra(MediaStore.Images.ImageColumns.ORIENTATION, 0);

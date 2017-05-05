@@ -1,5 +1,6 @@
 package uama.hangzhou.image.photochoose;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -9,8 +10,13 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.constant.Constants;
@@ -39,6 +45,24 @@ public class FourPicturesChoose {
         this.imageView3 = imageView3;
         this.imageView4 = imageView4;
         init();
+    }
+
+    @PermissionYes(302)
+    private void getCamera(List<String> grantedPermissions) {
+        goToTakePhoto();
+    }
+
+    @PermissionNo(302)
+    private void noCamera(List<String> grantedPermissions) {
+    }
+
+    @PermissionYes(303)
+    private void getExternal(List<String> grantedPermissions) {
+        goToChooseImage();
+    }
+
+    @PermissionNo(303)
+    private void noExternal(List<String> grantedPermissions) {
     }
 
     private void init() {
@@ -93,10 +117,19 @@ public class FourPicturesChoose {
                 }
                 switch (index) {
                     case 1:
-                        goToChooseImage();
+                        AndPermission.with(activity)
+                                .requestCode(303)
+                                .callback(FourPicturesChoose.this)
+                                .permission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .start();
                         break;
                     case 2:
-                        goToTakePhoto();
+                        AndPermission.with(activity)
+                                .requestCode(302)
+                                .callback(FourPicturesChoose.this)
+                                .permission(Manifest.permission.CAMERA,
+                                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .start();
                         break;
                 }
             }
@@ -132,7 +165,7 @@ public class FourPicturesChoose {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
         intent.putExtra(PhotoWallActivity.SelectedCounts, imageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, 4);
-        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, ContextCompat.getColor(activity,R.color.uimage_test));
+        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, ContextCompat.getColor(activity, R.color.uimage_test));
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 
