@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import uama.hangzhou.image.R;
@@ -45,9 +47,9 @@ public class PhotoWallActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.uimage_photo_wall);
-        int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR,-1);//必须为资源
+        int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR, -1);//必须为资源
         title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
-        if(titleColor != -1){
+        if (titleColor != -1) {
             title.setBackgroundColor(titleColor);
         }
         albumTitleBarCancel = (TextView) findViewById(R.id.album_title_bar_cancel);
@@ -108,8 +110,9 @@ public class PhotoWallActivity extends FragmentActivity {
                 while (true) {
                     // 获取图片的路径
                     String path = cursor.getString(0);
-                    list.add(path);
-
+                    if (fileIsExists(path)) {
+                        list.add(path);
+                    }
                     if (!cursor.moveToPrevious()) {
                         break;
                     }
@@ -119,6 +122,38 @@ public class PhotoWallActivity extends FragmentActivity {
         }
 
         return list;
+    }
+    //获取文件大小
+    public long getFileSizes(File f) throws Exception {
+
+        long s = 0;
+        if (f.exists()) {
+            FileInputStream fis = null;
+            fis = new FileInputStream(f);
+            s = fis.available();
+            fis.close();
+        } else {
+            f.createNewFile();
+            System.out.println("文件夹不存在");
+        }
+
+        return s;
+    }
+
+    //判断图片是否有效
+    public boolean fileIsExists(String path) {
+        try {
+            File f = new File(path);
+            if (!f.exists()) {//路径不存在
+                return false;
+            }
+            if (getFileSizes(f) <= 0) {//图片大小为0
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     public void showErrorDialog() {

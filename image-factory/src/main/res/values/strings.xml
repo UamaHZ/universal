@@ -1,5 +1,5 @@
 <resources>
-    <string name="uimage_app_name">Image-Factory</string>
+    <string name="app_name">Image-Factory</string>
     <string name="uimage_cancel">取消</string>
     <string name="uimage_delete">删除</string>
     <string name="uimage_take_camera">拍照</string>

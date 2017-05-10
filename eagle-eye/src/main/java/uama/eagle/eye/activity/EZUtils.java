@@ -8,7 +8,16 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.ResourceDecoder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.Resource;
+import com.bumptech.glide.load.resource.bitmap.BitmapResource;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.videogo.exception.InnerException;
+import com.videogo.openapi.EZOpenSDK;
 import com.videogo.openapi.bean.EZCameraInfo;
 import com.videogo.openapi.bean.EZDeviceInfo;
 import com.videogo.util.LogUtil;
@@ -135,7 +144,8 @@ public class EZUtils {
      *  密码需要开发者自己存储，图片信息获取以及缓存策略需要开发者自己设计缓存规则
      *
      * */
-    public static void loadImage(final Context context, final ImageView imageView, final String url, final String deviceSerial, final VerifyCodeInput.VerifyCodeErrorListener verifyCodeErrorListener) {
+    public static void loadImage(final Context context, final ImageView imageView, final String url, final String deviceSerial,
+                                 final VerifyCodeInput.VerifyCodeErrorListener verifyCodeErrorListener,final EZOpenSDK ezOpenSDK) {
         final String verifyCode = DataManager.getInstance().getDeviceSerialVerifyCode(deviceSerial);
         if (!isEncrypt(url)){
             Glide.with(context).load(url)
@@ -206,7 +216,7 @@ public class EZUtils {
                                 desBitmap = BitmapFactory.decodeByteArray(src, 0, src.length);
                             }else{
                             /*************** 开发者需要调用此接口解密 ****************/
-                            byte[] data1 = SeApp.getOpenSDK().decryptData(output.toByteArray(), verifyCode);
+                            byte[] data1 = ezOpenSDK.decryptData(output.toByteArray(), verifyCode);
                                 if (data1 == null || data1.length <= 0){
                                     LogUtil.d("EZUTils","verifyCodeError！");
                                     /*************** 验证码错误 ,此处回调是在子线程中，处理UI需调回到主线程****************/

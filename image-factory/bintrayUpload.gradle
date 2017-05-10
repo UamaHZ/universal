@@ -125,6 +125,9 @@ bintray {
     pkg {
         userOrg = bintrayOrganizationId
         repo = projectRepositoryName
+        version{
+
+        }
         name = projectName
         websiteUrl = projectSiteUrl
         vcsUrl = projectGitUrl
