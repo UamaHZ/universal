@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.ColorRes;
 
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionNo;
@@ -34,6 +35,7 @@ public class PhotoChoose {
     private int maxCounts;//最大选择图片数量
     private Activity activity;
     public String mNewImageFilePath;
+    private int color;
 
     public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts) {
         this.myGridView = myGridView;
@@ -41,7 +43,13 @@ public class PhotoChoose {
         this.maxCounts = maxCounts;
         init();
     }
-
+    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, @ColorRes int color) {
+        this.myGridView = myGridView;
+        this.activity = activity;
+        this.maxCounts = maxCounts;
+        this.color = color;
+        init();
+    }
     @PermissionYes(300)
     private void getCamera(List<String> grantedPermissions) {
         goToTakePhoto();
@@ -119,6 +127,7 @@ public class PhotoChoose {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
         intent.putExtra(PhotoWallActivity.SelectedCounts, mImageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, maxCounts);
+        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR,color);
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 

@@ -47,9 +47,9 @@ public class PhotoWallActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.uimage_photo_wall);
-        int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR, -1);//必须为资源
+        int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR, 0);//必须为资源
         title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
-        if (titleColor != -1) {
+        if (titleColor != 0) {
             title.setBackgroundColor(titleColor);
         }
         albumTitleBarCancel = (TextView) findViewById(R.id.album_title_bar_cancel);

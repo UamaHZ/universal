@@ -33,9 +33,4 @@
         android:layout_below="@id/ll_upload_photo"
         android:layout_width="match_parent"
         android:layout_height="50dp" />
-    <uama.hangzhou.share.ShareView
-        android:id="@+id/share_view"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></uama.hangzhou.share.ShareView>
 </RelativeLayout>

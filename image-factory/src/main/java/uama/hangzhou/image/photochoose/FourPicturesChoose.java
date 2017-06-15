@@ -37,6 +37,7 @@ public class FourPicturesChoose {
     private Activity activity;
     public ArrayList<String> imageList;
     public String mNewImageFilePath;
+    private int color;
 
     public FourPicturesChoose(Activity activity, ImageView imageView1, ImageView imageView2, ImageView imageView3, ImageView imageView4) {
         this.activity = activity;
@@ -46,7 +47,15 @@ public class FourPicturesChoose {
         this.imageView4 = imageView4;
         init();
     }
-
+    public FourPicturesChoose(Activity activity, ImageView imageView1, ImageView imageView2, ImageView imageView3, ImageView imageView4,int color) {
+        this.activity = activity;
+        this.imageView1 = imageView1;
+        this.imageView2 = imageView2;
+        this.imageView3 = imageView3;
+        this.imageView4 = imageView4;
+        this.color = color;
+        init();
+    }
     @PermissionYes(302)
     private void getCamera(List<String> grantedPermissions) {
         goToTakePhoto();
@@ -165,7 +174,7 @@ public class FourPicturesChoose {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
         intent.putExtra(PhotoWallActivity.SelectedCounts, imageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, 4);
-        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, ContextCompat.getColor(activity, R.color.uimage_test));
+        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR,color);
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 
