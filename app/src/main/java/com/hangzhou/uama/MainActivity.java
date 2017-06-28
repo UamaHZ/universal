@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
         image2 = (ImageView) findViewById(R.id.photo_choose_img2);
         image3 = (ImageView) findViewById(R.id.photo_choose_img3);
         image4 = (ImageView) findViewById(R.id.photo_choose_img4);
-        fourPicturesChoose = new FourPicturesChoose(this, image1, image2, image3, image4);
+        fourPicturesChoose = new FourPicturesChoose(this, image1, image2, image3, image4, ContextCompat.getColor(this, R.color.green_light),
+                100);
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
         photoChoose = new PhotoChoose(this, myGridView, 6);
     }

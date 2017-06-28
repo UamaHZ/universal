@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class PhotoWallAdapter extends BaseAdapter {
     private ArrayList<String> selectedImageList;
     private int customCheckBoxBg;
 
-    public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList, int maxNum,int customCheckBoxBg) {
+    public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList, int maxNum, int customCheckBoxBg) {
         this.context = context;
         this.imagePathList = imagePathList;
         if (selectedImageList == null) {
@@ -71,12 +72,15 @@ public class PhotoWallAdapter extends BaseAdapter {
 
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.uimage_photo_wall_item, parent,false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.uimage_photo_wall_item, parent, false);
             holder = new ViewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.photo_wall_item_photo);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.photo_wall_item_cb);
-            if(customCheckBoxBg>0){
-                holder.checkBox.setBackgroundResource(customCheckBoxBg);
+            try {
+                if (customCheckBoxBg > 0) {
+                    holder.checkBox.setBackgroundResource(customCheckBoxBg);
+                }
+            }catch (Exception e){
             }
             convertView.setTag(holder);
         } else {

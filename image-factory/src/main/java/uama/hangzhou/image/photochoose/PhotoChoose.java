@@ -36,6 +36,7 @@ public class PhotoChoose {
     private Activity activity;
     public String mNewImageFilePath;
     private int color;
+    private int checkBg;
 
     public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts) {
         this.myGridView = myGridView;
@@ -43,11 +44,12 @@ public class PhotoChoose {
         this.maxCounts = maxCounts;
         init();
     }
-    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, @ColorRes int color) {
+    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, @ColorRes int color,int checkBG) {
         this.myGridView = myGridView;
         this.activity = activity;
         this.maxCounts = maxCounts;
         this.color = color;
+        this.checkBg = checkBG;
         init();
     }
     @PermissionYes(300)
@@ -116,7 +118,6 @@ public class PhotoChoose {
         ContentValues contentValues = new ContentValues(1);
         contentValues.put(MediaStore.Images.Media.DATA, new File(mNewImageFilePath).getAbsolutePath());
         Uri uri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-//        Uri uri = Uri.fromFile(new File(mNewImageFilePath));
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.putExtra(MediaStore.Images.ImageColumns.ORIENTATION, 0);
         activity.startActivityForResult(intent, Constants.TAKE_PHOTO);
@@ -128,6 +129,7 @@ public class PhotoChoose {
         intent.putExtra(PhotoWallActivity.SelectedCounts, mImageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, maxCounts);
         intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR,color);
+        intent.putExtra(PhotoWallActivity.CHECK_BOX_BG,checkBg);
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 
