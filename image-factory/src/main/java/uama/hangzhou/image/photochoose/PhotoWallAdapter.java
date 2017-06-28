@@ -7,6 +7,8 @@ package uama.hangzhou.image.photochoose;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +36,9 @@ public class PhotoWallAdapter extends BaseAdapter {
     private ArrayList<String> imagePathList = null;
     private int maxNum;
     private ArrayList<String> selectedImageList;
+    private int customCheckBoxBg;
 
-    public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList, int maxNum) {
+    public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList, int maxNum,int customCheckBoxBg) {
         this.context = context;
         this.imagePathList = imagePathList;
         if (selectedImageList == null) {
@@ -44,6 +47,7 @@ public class PhotoWallAdapter extends BaseAdapter {
             this.selectedImageList = selectedImageList;
         }
         this.maxNum = maxNum;
+        this.customCheckBoxBg = customCheckBoxBg;
     }
 
     @Override
@@ -71,6 +75,9 @@ public class PhotoWallAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.photo_wall_item_photo);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.photo_wall_item_cb);
+            if(customCheckBoxBg>0){
+                holder.checkBox.setBackgroundResource(customCheckBoxBg);
+            }
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -129,6 +136,7 @@ public class PhotoWallAdapter extends BaseAdapter {
     private class ViewHolder {
         ImageView imageView;
         CheckBox checkBox;
+        //是否使用自定义的checkbox背景
     }
 
 

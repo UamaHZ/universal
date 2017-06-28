@@ -27,7 +27,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
-apply from: "bintrayUpload.gradle"
+//apply from: "bintrayUpload.gradle"
 //task makeJar(type: Copy) {
 //    delete 'build/libs/UamaUtils_1.0.0.jar'
 //    from('build/intermediates/bundles/release/')

@@ -42,6 +42,7 @@ public class PhotoWallActivity extends FragmentActivity {
     private ArrayList<String> selectedImageList;
     private RelativeLayout title;
     public static String PHOTO_WALL_COLOR = "PHOTO_WALL_COLOR";
+    public static String CHECK_BOX_BG = "CHECK_BOX_BG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class PhotoWallActivity extends FragmentActivity {
         setContentView(R.layout.uimage_photo_wall);
         int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR, 0);//必须为资源
         title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
+        int checkBox_bg = getIntent().getIntExtra(CHECK_BOX_BG,0);
         if (titleColor != 0) {
             title.setBackgroundColor(titleColor);
         }
@@ -74,7 +76,7 @@ public class PhotoWallActivity extends FragmentActivity {
         selectedImageList = getIntent().getStringArrayListExtra(SelectedCounts);
         mPhotoWall = (GridView) findViewById(R.id.photo_wall_grid);
         list = getImagePathsByContentProvider();
-        adapter = new PhotoWallAdapter(this, list, selectedImageList, maxNum);
+        adapter = new PhotoWallAdapter(this, list, selectedImageList, maxNum,checkBox_bg);
         mPhotoWall.setAdapter(adapter);
         setChooseCounts(selectedImageList.size());
     }

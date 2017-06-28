@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -38,6 +37,7 @@ public class FourPicturesChoose {
     public ArrayList<String> imageList;
     public String mNewImageFilePath;
     private int color;
+    private int checkBg;
 
     public FourPicturesChoose(Activity activity, ImageView imageView1, ImageView imageView2, ImageView imageView3, ImageView imageView4) {
         this.activity = activity;
@@ -47,13 +47,14 @@ public class FourPicturesChoose {
         this.imageView4 = imageView4;
         init();
     }
-    public FourPicturesChoose(Activity activity, ImageView imageView1, ImageView imageView2, ImageView imageView3, ImageView imageView4,int color) {
+    public FourPicturesChoose(Activity activity, ImageView imageView1, ImageView imageView2, ImageView imageView3, ImageView imageView4,int color,int checkBG) {
         this.activity = activity;
         this.imageView1 = imageView1;
         this.imageView2 = imageView2;
         this.imageView3 = imageView3;
         this.imageView4 = imageView4;
         this.color = color;
+        this.checkBg = checkBG;
         init();
     }
     @PermissionYes(302)
@@ -175,6 +176,7 @@ public class FourPicturesChoose {
         intent.putExtra(PhotoWallActivity.SelectedCounts, imageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, 4);
         intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR,color);
+        intent.putExtra(PhotoWallActivity.CHECK_BOX_BG,checkBg);
         activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
     }
 

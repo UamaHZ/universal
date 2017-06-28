@@ -1,11 +1,9 @@
 package com.hangzhou.uama;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -21,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private MyGridView myGridView;
     private FourPicturesChoose fourPicturesChoose;
     ImageView image1, image2, image3, image4;
-//    private ShareView shareView;
+    //    private ShareView shareView;
     private PhotoChoose photoChoose;
 
     @Override
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         image2 = (ImageView) findViewById(R.id.photo_choose_img2);
         image3 = (ImageView) findViewById(R.id.photo_choose_img3);
         image4 = (ImageView) findViewById(R.id.photo_choose_img4);
-        fourPicturesChoose = new FourPicturesChoose(this, image1, image2, image3, image4,ContextCompat.getColor(this,R.color.green_light));
+        fourPicturesChoose = new FourPicturesChoose(this, image1, image2, image3, image4);
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
         photoChoose = new PhotoChoose(this, myGridView, 6);
     }
