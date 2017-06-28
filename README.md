@@ -1,6 +1,6 @@
 # ***UamaUniversal***
 ## *image-factory*
-最新版本：compile 'com.uama.widget:image-factory:1.1.1'
+最新版本：compile 'com.uama.widget:image-factory:1.2.6'
 1. 需要文件读取权限
 2. 需要相机权限
 ### ① 增加图片查看器 ImagePagerActivity
