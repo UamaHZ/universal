@@ -16,7 +16,7 @@
             android:layout_width="@dimen/uimage_photo_wight"
             android:layout_height="@dimen/uimage_photo_height"
             android:layout_gravity="center"
-            android:background="@mipmap/uimage_camera_default"
+            android:src="@mipmap/uimage_camera_default"
             android:scaleType="centerCrop" />
     </FrameLayout>
 
@@ -30,7 +30,7 @@
             android:layout_width="@dimen/uimage_photo_wight"
             android:layout_height="@dimen/uimage_photo_height"
             android:layout_gravity="center"
-            android:background="@mipmap/uimage_camera_default_ext"
+            android:src="@mipmap/uimage_camera_default_ext"
             android:scaleType="centerCrop" />
     </FrameLayout>
 
@@ -44,7 +44,7 @@
             android:layout_width="@dimen/uimage_photo_wight"
             android:layout_height="@dimen/uimage_photo_height"
             android:layout_gravity="center"
-            android:background="@mipmap/uimage_camera_default_ext"
+            android:src="@mipmap/uimage_camera_default_ext"
             android:scaleType="centerCrop" />
     </FrameLayout>
 
@@ -58,7 +58,7 @@
             android:layout_width="@dimen/uimage_photo_wight"
             android:layout_height="@dimen/uimage_photo_height"
             android:layout_gravity="center"
-            android:background="@mipmap/uimage_camera_default_ext"
+            android:src="@mipmap/uimage_camera_default_ext"
             android:scaleType="centerCrop" />
     </FrameLayout>
 

@@ -7,6 +7,8 @@ package uama.hangzhou.image.constant;
  */
 
 public class Constants {
-    public static final int TAKE_PHOTO = 1945;//拍照
-    public static final int SELECT_IMAGE = 1943;//选择照片
+    public static final int ONLY_TAKE_PHOTO = 1945;//拍照
+    public static final int ONLY_SELECT_IMAGE = 1943;//选择照片
+    public static final int FOUR_TAKE_PHOTO = 1946;//拍照
+    public static final int FOUR_SELECT_IMAGE = 1947;//选择照片
 }

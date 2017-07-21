@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.ColorRes;
 
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionNo;
@@ -30,11 +29,10 @@ import uama.hangzhou.image.widget.MyGridView;
 
 public class PhotoChoose {
     private MyGridView myGridView;
-    private PublishImageGridVIewAdapter imageGridVIewAdapter;
     private ArrayList<String> mImageList;//保存选择的图片非常重要
     private int maxCounts;//最大选择图片数量
     private Activity activity;
-    public String mNewImageFilePath;
+    private String mNewImageFilePath;
     private int color;
     private int checkBg;
 
@@ -44,35 +42,10 @@ public class PhotoChoose {
         this.maxCounts = maxCounts;
         init();
     }
-    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, @ColorRes int color,int checkBG) {
-        this.myGridView = myGridView;
-        this.activity = activity;
-        this.maxCounts = maxCounts;
-        this.color = color;
-        this.checkBg = checkBG;
-        init();
-    }
-    @PermissionYes(300)
-    private void getCamera(List<String> grantedPermissions) {
-        goToTakePhoto();
-    }
-
-    @PermissionNo(300)
-    private void noCamera(List<String> grantedPermissions) {
-    }
-
-    @PermissionYes(301)
-    private void getExternal(List<String> grantedPermissions) {
-        goToChooseImage();
-    }
-
-    @PermissionNo(301)
-    private void noExternal(List<String> grantedPermissions) {
-    }
 
     private void init() {
         mImageList = new ArrayList<>();
-        imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList, maxCounts, new PublishImageGridVIewAdapter.ShowChooseMenu() {
+        PublishImageGridVIewAdapter imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList, maxCounts, new PublishImageGridVIewAdapter.ShowChooseMenu() {
             @Override
             public void show() {
                 showPopupWindow();
@@ -82,7 +55,7 @@ public class PhotoChoose {
     }
 
     //弹出拍照、相册选择
-    public void showPopupWindow() {
+    private void showPopupWindow() {
         if (activity == null) {
             return;
         }
@@ -112,7 +85,7 @@ public class PhotoChoose {
     }
 
     //拍照
-    public void goToTakePhoto() {
+    private void goToTakePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         mNewImageFilePath = CacheFileUtils.getUpLoadPhotosPath();
         ContentValues contentValues = new ContentValues(1);
@@ -120,7 +93,7 @@ public class PhotoChoose {
         Uri uri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.putExtra(MediaStore.Images.ImageColumns.ORIENTATION, 0);
-        activity.startActivityForResult(intent, Constants.TAKE_PHOTO);
+        activity.startActivityForResult(intent, Constants.ONLY_TAKE_PHOTO);
     }
 
     //选择照片
@@ -130,34 +103,65 @@ public class PhotoChoose {
         intent.putExtra(PhotoWallActivity.MaxCounts, maxCounts);
         intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR,color);
         intent.putExtra(PhotoWallActivity.CHECK_BOX_BG,checkBg);
-        activity.startActivityForResult(intent, Constants.SELECT_IMAGE);
+        activity.startActivityForResult(intent, Constants.ONLY_SELECT_IMAGE);
     }
 
     public void setImageList(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.SELECT_IMAGE) {
-            if (resultCode == 1991) {
-                if (data == null) {
-                    return;
+        try {
+            if (requestCode == Constants.ONLY_SELECT_IMAGE) {
+                if (resultCode == 1991) {
+                    if (data == null) {
+                        return;
+                    }
+                    PublishImageGridVIewAdapter adapter = (PublishImageGridVIewAdapter) myGridView.getAdapter();
+                    mImageList.clear();
+                    mImageList.addAll(data.getStringArrayListExtra("paths"));
+                    adapter.notifyDataSetChanged();
                 }
-                PublishImageGridVIewAdapter adapter = (PublishImageGridVIewAdapter) myGridView.getAdapter();
-                mImageList.clear();
-                mImageList.addAll(data.getStringArrayListExtra("paths"));
-                adapter.notifyDataSetChanged();
+            } else if (requestCode == Constants.ONLY_TAKE_PHOTO) {
+                if (resultCode == Activity.RESULT_OK) {
+                    File imageFile = new File(mNewImageFilePath);
+                    Uri uri = Uri.fromFile(imageFile);
+                    activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+                    PublishImageGridVIewAdapter adapter = (PublishImageGridVIewAdapter) myGridView.getAdapter();
+                    mImageList.add(CacheFileUtils.getRealFilePath(activity, uri));
+                    adapter.notifyDataSetChanged();
+                }
             }
-        } else if (requestCode == Constants.TAKE_PHOTO) {
-            if (resultCode == Activity.RESULT_OK) {
-                File imageFile = new File(mNewImageFilePath);
-                Uri uri = Uri.fromFile(imageFile);
-                activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
-                PublishImageGridVIewAdapter adapter = (PublishImageGridVIewAdapter) myGridView.getAdapter();
-                mImageList.add(CacheFileUtils.getRealFilePath(activity, uri));
-                adapter.notifyDataSetChanged();
-            }
+        } catch (Exception e) {
         }
     }
 
     //获取选中的图片列表
     public ArrayList<String> getChosenImageList() {
         return mImageList;
+    }
+
+    //设置title颜色
+    public void setTitleColor(int color) {
+        this.color = color;
+    }
+
+    //设置checkBox的背景
+    public void setCheckBackground(int checkBg) {
+        this.checkBg = checkBg;
+    }
+
+    @PermissionYes(300)
+    private void getCamera(List<String> grantedPermissions) {
+        goToTakePhoto();
+    }
+
+    @PermissionNo(300)
+    private void noCamera(List<String> grantedPermissions) {
+    }
+
+    @PermissionYes(301)
+    private void getExternal(List<String> grantedPermissions) {
+        goToChooseImage();
+    }
+
+    @PermissionNo(301)
+    private void noExternal(List<String> grantedPermissions) {
     }
 }

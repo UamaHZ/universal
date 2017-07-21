@@ -100,6 +100,9 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mImageList.size()>=maxCounts){
+                    return;
+                }
                 if (mImageList.size() != maxCounts && getCount() - 1 == position) {
                     DeviceUtils.closeKeyBoard((Activity)mContext);
                     showChooseMenu.show();
