@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hangzhou.uama">
+          package="com.hangzhou.uama">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:name=".SeApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".SeApp"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:supportsRtl="true">
-        <activity android:name="com.hangzhou.uama.MainActivity">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="585ce87f717c1923480009e6" >
+            android:value="585ce87f717c1923480009e6">
         </meta-data>
+
+        <activity android:name=".Main2Activity">
+        </activity>
     </application>
 
 </manifest>

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private MyGridView myGridView;
     private FourPicturesChoose fourPicturesChoose;
     ImageView image1, image2, image3, image4;
+    private TextView textView;
     //    private ShareView shareView;
     private PhotoChoose photoChoose;
     private SparseArray<ImageView> viewSparseArray;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         image2 = (ImageView) findViewById(R.id.photo_choose_img2);
         image3 = (ImageView) findViewById(R.id.photo_choose_img3);
         image4 = (ImageView) findViewById(R.id.photo_choose_img4);
+        textView = (TextView) findViewById(R.id.tv_zoom);
         viewSparseArray.put(0,image1);
         viewSparseArray.put(1,image2);
 //        viewSparseArray.put(2,image3);
@@ -52,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
         photoChoose = new PhotoChoose(this, myGridView, 6);
         photoChoose.setTitleColor(ContextCompat.getColor(this, R.color.green_light));
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,Main2Activity.class));
+            }
+        });
     }
 
     @Override

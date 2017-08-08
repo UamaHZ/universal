@@ -3,9 +3,11 @@ package uama.hangzhou.image.photochoose;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -259,6 +261,15 @@ public class FourPicturesChoose {
 
     @PermissionNo(302)
     private void noCamera(List<String> grantedPermissions) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setMessage("无法获取摄像头数据，请检查是否已经打开摄像头权限。")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setCancelable(false);
+        builder.show();
     }
 
     @PermissionYes(303)
