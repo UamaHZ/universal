@@ -78,6 +78,7 @@ public class ImagePagerActivity extends FragmentActivity {
         }
 
         mPager.setCurrentItem(pagerPosition);
+
     }
 
     @Override

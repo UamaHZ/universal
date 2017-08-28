@@ -16,7 +16,6 @@
         android:layout_marginTop="15dp"
         android:horizontalSpacing="5dp"
         android:scrollbars="none"
-        android:visibility="gone"
         android:verticalSpacing="11dp"
        />
 
@@ -25,7 +24,6 @@
         layout="@layout/uimage_upload_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_below="@+id/grid_view_publish_photo"
         />
 
@@ -34,7 +32,6 @@
         android:text="kfkds"
         android:layout_below="@id/ll_upload_photo"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="50dp" />
 
     <TextView

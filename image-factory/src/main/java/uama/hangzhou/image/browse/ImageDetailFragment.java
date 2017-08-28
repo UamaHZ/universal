@@ -5,6 +5,7 @@
 
 package uama.hangzhou.image.browse;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -51,6 +53,7 @@ public class ImageDetailFragment extends Fragment {
     private String mImageUrl;
     private ZoomDrawView photoDraweeView;
     private ProgressBar progressBar;
+    private TextView tvLoadFail;
     private ImageRequest request;
     private boolean loadSuccess;
     private PipelineDraweeControllerBuilder controllerBuilder;
@@ -86,8 +89,8 @@ public class ImageDetailFragment extends Fragment {
 
         photoDraweeView = (ZoomDrawView) v.findViewById(R.id.photo_detail_view);
         progressBar = (ProgressBar) v.findViewById(R.id.loading);
+        tvLoadFail = (TextView) v.findViewById(R.id.tv_load_fail);
         progressBar.setVisibility(View.VISIBLE);
-
         request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(mImageUrl))
                 .setResizeOptions(new ResizeOptions(DeviceUtils.getDisplayWidth(getActivity()), DeviceUtils.getDisplayHeight(getActivity())))
                 .setLocalThumbnailPreviewsEnabled(true)
@@ -104,6 +107,7 @@ public class ImageDetailFragment extends Fragment {
             public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
                 super.onFinalImageSet(id, imageInfo, animatable);
                 progressBar.setVisibility(View.GONE);
+                tvLoadFail.setVisibility(View.GONE);
                 if (imageInfo == null || photoDraweeView == null) {
                     return;
                 }
@@ -117,7 +121,7 @@ public class ImageDetailFragment extends Fragment {
                 super.onFailure(id, throwable);
                 progressBar.setVisibility(View.GONE);
                 loadSuccess = false;
-                showTips("加载图片失败,点击重试");
+                tvLoadFail.setVisibility(View.VISIBLE);
             }
         });
         controllerBuilder.setImageRequest(request);
@@ -156,7 +160,7 @@ public class ImageDetailFragment extends Fragment {
         photoDraweeView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(canSave){
+                if (canSave) {
                     TipMessageDialog.showSaveMessage(getContext(), new TipMessageDialog.OnItemClickListener() {
                         @Override
                         public void onItemClick() {

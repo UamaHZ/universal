@@ -8,10 +8,13 @@ package uama.hangzhou.image.photochoose;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
@@ -50,7 +53,7 @@ public class PhotoWallActivity extends FragmentActivity {
         setContentView(R.layout.uimage_photo_wall);
         int titleColor = getIntent().getIntExtra(PHOTO_WALL_COLOR, 0);//必须为资源
         title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
-        int checkBox_bg = getIntent().getIntExtra(CHECK_BOX_BG,0);
+        int checkBox_bg = getIntent().getIntExtra(CHECK_BOX_BG, 0);
         if (titleColor != 0) {
             title.setBackgroundColor(titleColor);
         }
@@ -76,7 +79,7 @@ public class PhotoWallActivity extends FragmentActivity {
         selectedImageList = getIntent().getStringArrayListExtra(SelectedCounts);
         mPhotoWall = (GridView) findViewById(R.id.photo_wall_grid);
         list = getImagePathsByContentProvider();
-        adapter = new PhotoWallAdapter(this, list, selectedImageList, maxNum,checkBox_bg);
+        adapter = new PhotoWallAdapter(this, list, selectedImageList, maxNum, checkBox_bg);
         mPhotoWall.setAdapter(adapter);
         setChooseCounts(selectedImageList.size());
     }
@@ -125,6 +128,7 @@ public class PhotoWallActivity extends FragmentActivity {
 
         return list;
     }
+
     //获取文件大小
     public long getFileSizes(File f) throws Exception {
 
@@ -152,7 +156,17 @@ public class PhotoWallActivity extends FragmentActivity {
             if (getFileSizes(f) <= 0) {//图片大小为0
                 return false;
             }
+            BitmapFactory.Options newOpts = new BitmapFactory.Options();
+            newOpts.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, newOpts);
+            newOpts.inJustDecodeBounds = false;
+            int w = newOpts.outWidth;
+            int h = newOpts.outHeight;
+            if (w <= 0 ||h<=0) {
+                return false;
+            }
         } catch (Exception e) {
+            Log.i("ailee",e.getMessage());
             return false;
         }
         return true;

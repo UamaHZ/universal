@@ -12,9 +12,16 @@
         android:id="@+id/photo_detail_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        fresco:failureImage="@mipmap/uimage_empty_photo"
-        fresco:failureImageScaleType="fitXY" />
-
+        fresco:actualImageScaleType="fitCenter" />
+    <TextView
+        android:id="@+id/tv_load_fail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="加载图片失败,点击重试"
+        android:textSize="16dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="wrap_content"
