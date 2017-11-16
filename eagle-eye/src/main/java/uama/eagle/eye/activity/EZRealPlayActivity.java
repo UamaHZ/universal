@@ -109,6 +109,7 @@ import java.util.TimerTask;
 
 import great.sun.com.eagle_eye.R;
 
+
 /**
  * 实时预览2.7
  *
@@ -2584,7 +2585,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         setRealPlayTalkUI();
 
         setVideoLevel();
-        
+
 /*
         if (mRealPlayMgr != null && mRealPlayMgr.getSupportPtzPrivacy() == 1) {
             mRealPlayPrivacyBtnLy.setVisibility(View.VISIBLE);
@@ -2932,7 +2933,7 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
         setRealPlaySound();
 
         // temp solution for OPENSDK-92
-        // Android 预览3Q10的时候切到流畅之后 视频播放窗口变大了 
+        // Android 预览3Q10的时候切到流畅之后 视频播放窗口变大了
         //        if (msg.arg1 != 0) {
         //            mRealRatio = (float) msg.arg2 / msg.arg1;
         //        } else {

@@ -5,7 +5,8 @@
 
 package uama.hangzhou.image.browse;
 
-/**
+/*
+ *
  * Created by GuJiaJia on 2015/5/9.
  * E-mail: 965939858@qq.com
  */

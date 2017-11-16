@@ -61,12 +61,12 @@ public class EZCameraGroupInfo implements Serializable {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
             EZCameraInfo cameraInfo = EZCameraInfo.buildBean(obj);
-            EZCameraInfo ezCameraInfo = new EZCameraInfo();
-            ezCameraInfo.setCameraId(cameraInfo.getCameraId());
-            ezCameraInfo.setCameraName(cameraInfo.getCameraName());
-            ezCameraInfo.setPicUrl(cameraInfo.getPicUrl());
-//            ezCameraInfo.setOnlineStatus(Integer.parseInt(cameraInfo.getStatus()));
-            cameraInfos.add(ezCameraInfo);
+//            EZCameraInfo ezCameraInfo = new EZCameraInfo();
+//            ezCameraInfo.setCameraId(cameraInfo.getCameraId());
+//            ezCameraInfo.setCameraName(cameraInfo.getCameraName());
+//            ezCameraInfo.setPicUrl(cameraInfo.getPicUrl());
+////            ezCameraInfo.setOnlineStatus(Integer.parseInt(cameraInfo.getStatus()));
+            cameraInfos.add(cameraInfo);
         }
         info.setCameraInfos(cameraInfos);
         return info;
