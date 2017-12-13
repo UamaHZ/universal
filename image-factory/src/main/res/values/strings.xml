@@ -3,7 +3,8 @@
     <string name="uimage_cancel">取消</string>
     <string name="uimage_delete">删除</string>
     <string name="uimage_take_camera">拍照</string>
-    <string name="uimage_choose_photo">相册</string>
+    <string name="uimage_choose_photo">相机胶卷</string>
     <string name="uimage_confirm">确定</string>
     <string name="uimage_viewpager_indicator">%1$d/%2$d</string>
+    <string name="uimage_skip">跳过</string>
 </resources>

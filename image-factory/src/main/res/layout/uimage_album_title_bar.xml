@@ -1,53 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ 杭州绿漫科技有限公司
-  ~ Copyright (c) 16-6-27 上午11:53.
-  -->
-
 <!-- 顶部标题栏 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_comm_topbar"
-    android:layout_width="match_parent"
-    android:layout_height="49dp"
-    android:background="#fa5757" >
+                android:id="@+id/ll_comm_topbar"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#ffffff"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
-    <TextView
+    <ImageView
         android:id="@+id/album_title_bar_cancel"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="#ffffff"
-        android:text="@string/uimage_cancel"
-        android:textSize="15sp"
-         />
+        android:layout_width="28dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/return_icon"/>
 
     <TextView
         android:id="@+id/album_title_bar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:maxLength="16"
         android:ellipsize="end"
+        android:maxLength="16"
         android:text="@string/uimage_choose_photo"
-        android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textColor="#333333"
+        android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/album_title_bar_confirm"
+        android:id="@+id/album_title_bar_skip"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:minWidth="60dp"
         android:layout_alignParentRight="true"
-        android:textSize="15sp"
-        android:textColor="#ffffff"
-        android:layout_marginRight="8dp"
-        android:text="@string/uimage_confirm"
-        />
+        android:gravity="right|center_vertical"
+        android:minWidth="60dp"
+        android:text="@string/uimage_skip"
+        android:textColor="#333333"
+        android:textSize="15sp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="#D1D1D1"/>
 </RelativeLayout>

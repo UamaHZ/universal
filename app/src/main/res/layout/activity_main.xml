@@ -11,12 +11,13 @@
         <!--android:layout_height="match_parent"/>-->
     <uama.hangzhou.image.widget.MyGridView
         android:id="@+id/grid_view_publish_photo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:horizontalSpacing="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="40dp"
         android:scrollbars="none"
-        android:verticalSpacing="11dp"
+        android:verticalSpacing="10dp"
        />
 
     <include
@@ -34,9 +35,4 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
-    <TextView
-        android:id="@+id/tv_zoom"
-        android:layout_width="match_parent"
-        android:text="zoom"
-        android:layout_height="100dp"/>
 </RelativeLayout>

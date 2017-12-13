@@ -7,10 +7,7 @@ package uama.hangzhou.image.photochoose;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +20,7 @@ import java.util.List;
 
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.browse.ImagePagerActivity;
+import uama.hangzhou.image.util.PhotoToastUtil;
 import uama.hangzhou.image.util.SDCardImageLoader;
 
 
@@ -38,18 +36,40 @@ public class PhotoWallAdapter extends BaseAdapter {
     private int maxNum;
     private ArrayList<String> selectedImageList;
     private int customCheckBoxBg;
+    private int cameraBg;
+    private int cameraSrc;
+    private boolean firstIsCamera;
 
-    public PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList, int maxNum, int customCheckBoxBg) {
+    PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList,
+                     int maxNum) {
         this.context = context;
         this.imagePathList = imagePathList;
-        if (selectedImageList == null) {
-            this.selectedImageList = new ArrayList<>();
-        } else {
-            this.selectedImageList = selectedImageList;
-        }
+        this.selectedImageList = selectedImageList;
+        this.maxNum = maxNum;
+    }
+
+    PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList,
+                     int maxNum, int customCheckBoxBg) {
+        this.context = context;
+        this.imagePathList = imagePathList;
+        this.selectedImageList = selectedImageList;
         this.maxNum = maxNum;
         this.customCheckBoxBg = customCheckBoxBg;
     }
+
+    PhotoWallAdapter(Context context, ArrayList<String> imagePathList, ArrayList<String> selectedImageList,
+                     int maxNum, int customCheckBoxBg, int cameraBg, int cameraSrc) {
+        this.context = context;
+        this.imagePathList = imagePathList;
+        this.selectedImageList = selectedImageList;
+        this.maxNum = maxNum;
+        this.customCheckBoxBg = customCheckBoxBg;
+        this.cameraBg = cameraBg;
+        this.cameraSrc = cameraSrc;
+        firstIsCamera = true;
+        selectedImageList.add(0, "camera");
+    }
+
 
     @Override
     public int getCount() {
@@ -80,7 +100,8 @@ public class PhotoWallAdapter extends BaseAdapter {
                 if (customCheckBoxBg > 0) {
                     holder.checkBox.setBackgroundResource(customCheckBoxBg);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             convertView.setTag(holder);
         } else {
@@ -97,15 +118,24 @@ public class PhotoWallAdapter extends BaseAdapter {
 
         holder.checkBox.setChecked(bSelected);
         if (!TextUtils.isEmpty(filePath)) {
-            holder.imageView.setTag(filePath);
-            SDCardImageLoader.getInstance(context).loadImage(4, filePath, holder.imageView);
+            if (firstIsCamera && position == 0) {
+                holder.imageView.setTag(filePath);
+                holder.imageView.setBackgroundResource(cameraBg <= 0 ? R.mipmap.camera_bg_blur : cameraBg);
+                holder.imageView.setImageResource(cameraSrc <= 0 ? R.mipmap.camera_icon_88black : cameraSrc);
+                holder.imageView.setScaleType(ImageView.ScaleType.CENTER);
+                holder.checkBox.setVisibility(View.GONE);
+            } else {
+                holder.checkBox.setVisibility(View.VISIBLE);
+                holder.imageView.setTag(filePath);
+                SDCardImageLoader.getInstance(context).loadImage(4, filePath, holder.imageView);
+            }
         }
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isSelected(filePath)) {
-                    if (selectedImageList.size() > maxNum - 1) {
-                        ((PhotoWallActivity) context).showErrorDialog();
+                    if (selectedImageList.size() > (firstIsCamera ? maxNum : maxNum - 1)) {
+                        PhotoToastUtil.showErrorDialog(context, maxNum);
                         holder.checkBox.setChecked(false);
                         return;
                     } else {
@@ -118,14 +148,24 @@ public class PhotoWallAdapter extends BaseAdapter {
                     holder.imageView.setColorFilter(null);
                     holder.checkBox.setChecked(false);
                 }
-                ((PhotoWallActivity) context).setChooseCounts(selectedImageList.size());
+
+                ((PhotoWallActivity) context).setChooseCounts(firstIsCamera ? selectedImageList.size() - 1 : selectedImageList.size());
             }
         });
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> imageList = new ArrayList<String>();
+                if (firstIsCamera && position == 0) {
+                    if (selectedImageList.size() > maxNum) {
+                        PhotoToastUtil.showErrorDialog(context, maxNum);
+                        return;
+                    }
+                    //调起拍照
+                    ((PhotoWallActivity) context).goToTakePhoto();
+                    return;
+                }
+                List<String> imageList = new ArrayList<>();
                 imageList.add("file://" + filePath);
                 Intent intent = new Intent(context, ImagePagerActivity.class);
                 intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, position);

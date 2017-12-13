@@ -42,6 +42,9 @@ public class FourPicturesChoose {
     private int color;
     private int checkBg;
     private int firstDefaultBg = -1, secondDefaultBg = -1;//第一张和第二张的默认背景
+    private boolean firstIsCamera = true;
+    private int cameraBg;//第一张拍照背景图
+    private int cameraSrc;//第一张图片资源图
 
     public FourPicturesChoose(Activity activity, SparseArray<ImageView> nImageViewList) {
         this.activity = activity;
@@ -51,6 +54,14 @@ public class FourPicturesChoose {
         }
     }
 
+    public FourPicturesChoose(Activity activity, SparseArray<ImageView> nImageViewList,boolean firstIsCamera) {
+        this.activity = activity;
+        this.imageViewList = nImageViewList;
+        this.firstIsCamera = firstIsCamera;
+        if (imageViewList != null && imageViewList.size() > 0) {
+            init();
+        }
+    }
     private void init() {
         imageList = new ArrayList<>();
         switch (imageViewList.size()) {
@@ -118,6 +129,15 @@ public class FourPicturesChoose {
         if (position < imageList.size()) {
             strArray = new String[]{activity.getString(R.string.uimage_delete)};
         } else {
+            if(firstIsCamera){
+                AndPermission.with(activity)
+                        .requestCode(304)
+                        .callback(FourPicturesChoose.this)
+                        .permission(Manifest.permission.CAMERA,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .start();
+                return;
+            }
             strArray = new String[]{activity.getString(R.string.uimage_choose_photo), activity.getString(R.string.uimage_take_camera)};
         }
         MessageDialog.showBottomMenu(activity, strArray, new MessageDialog.MenuDialogOnItemClickListener() {
@@ -178,10 +198,13 @@ public class FourPicturesChoose {
     //选择照片
     private void goToChooseImage() {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
-        intent.putExtra(PhotoWallActivity.SelectedCounts, imageList);
+        intent.putExtra(PhotoWallActivity.SelectedImages, imageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, imageViewList.size());
         intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, color);
         intent.putExtra(PhotoWallActivity.CHECK_BOX_BG, checkBg);
+        intent.putExtra(PhotoWallActivity.FirstCAMERA, firstIsCamera);
+        intent.putExtra(PhotoWallActivity.CAMERA_BG, cameraBg);
+        intent.putExtra(PhotoWallActivity.CAMERA_SRC, cameraSrc);
         activity.startActivityForResult(intent, Constants.FOUR_SELECT_IMAGE);
     }
 
@@ -254,6 +277,12 @@ public class FourPicturesChoose {
         setDefaultBg();
     }
 
+    //设置第一张图片背景图
+    public void setCameraBg(int cameraBg){this.cameraBg = cameraBg;}
+
+    //设置第一张图片资源
+    public void setCameraSrc(int cameraSrc){this.cameraSrc = cameraSrc;}
+
     @PermissionYes(302)
     private void getCamera(List<String> grantedPermissions) {
         goToTakePhoto();
@@ -262,7 +291,7 @@ public class FourPicturesChoose {
     @PermissionNo(302)
     private void noCamera(List<String> grantedPermissions) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setMessage("无法获取摄像头数据，请检查是否已经打开摄像头权限。")
+                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -279,5 +308,32 @@ public class FourPicturesChoose {
 
     @PermissionNo(303)
     private void noExternal(List<String> grantedPermissions) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setCancelable(false);
+        builder.show();
+    }
+
+    @PermissionYes(304)
+    private void getExternalAndCamera(List<String> grantedPermissions) {
+        goToChooseImage();
+    }
+
+    @PermissionNo(304)
+    private void noExternalAndCamera(List<String> grantedPermissions) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setCancelable(false);
+        builder.show();
     }
 }

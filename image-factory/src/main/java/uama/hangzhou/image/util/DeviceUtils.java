@@ -35,8 +35,13 @@ public class DeviceUtils {
     }
 
     //关闭键盘
-    public static void closeKeyBoard(Activity activity){
+    public static void closeKeyBoard(Activity activity) {
+        if (activity == null || activity.getCurrentFocus() == null) {
+            return;
+        }
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        if(inputMethodManager != null){
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
     }
 }

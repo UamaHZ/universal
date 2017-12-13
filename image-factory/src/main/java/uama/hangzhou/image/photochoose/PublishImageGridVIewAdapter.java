@@ -5,7 +5,7 @@
 
 package uama.hangzhou.image.photochoose;
 
-/**
+/*
  * Created by gujiajia on 2016/6/25.
  * E-mail 965939858@qq.com
  * Tel: 15050261230
@@ -13,12 +13,15 @@ package uama.hangzhou.image.photochoose;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,25 +37,29 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
     private int height;
     private ShowChooseMenu showChooseMenu;
 
-    public PublishImageGridVIewAdapter(Context context, List<String> mImageList, int maxCounts, ShowChooseMenu showChooseMenu) {
+    PublishImageGridVIewAdapter(Context context, List<String> mImageList, int maxCounts, int columnCount, int divide,ShowChooseMenu showChooseMenu) {
         mContext = context;
         this.mImageList = mImageList;
         this.maxCounts = maxCounts;
         this.showChooseMenu = showChooseMenu;
-        this.height = (int) (DeviceUtils.getDisplayWidth(context) - DeviceUtils.convertDpToPixel(context, 75)) / 4;
-        if(this.mImageList == null){
+        if(divide<0){
+            this.height = (int) (DeviceUtils.getDisplayWidth(context) - DeviceUtils.convertDpToPixel(context, (columnCount + 1) * 15)) / columnCount;
+        }else {
+            this.height = divide;
+        }
+        if (this.mImageList == null) {
             this.mImageList = new ArrayList<>();
         }
     }
 
-    public void deleteItem(int position) {
+    private void deleteItem(int position) {
         mImageList.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (mImageList.size() < maxCounts-1) {
+        if (mImageList.size() < maxCounts - 1) {
             return mImageList.size() + 1;
         } else {
             return maxCounts;
@@ -80,28 +87,27 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.ivPic.setTag(new Integer(position));
-
+        viewHolder.ivPic.setTag(intToObject(position));
+        setRelativeLayoutWH(viewHolder.ivPic, height, height);
+        viewHolder.ivPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (position < mImageList.size()) {
             String path = mImageList.get(position);
             viewHolder.ivPic.setTag(path);
             viewHolder.ivPic.setVisibility(View.VISIBLE);
-                SDCardImageLoader.getInstance(mContext).loadImage(4, path, viewHolder.ivPic);
+            SDCardImageLoader.getInstance(mContext).loadImage(4, path, viewHolder.ivPic);
         } else {
             if (position == maxCounts && !mImageList.isEmpty()) {
                 viewHolder.ivPic.setVisibility(View.GONE);
             } else {
                 viewHolder.ivPic.setVisibility(View.VISIBLE);
-                viewHolder.ivPic.setImageResource(R.mipmap.uimage_publish_add_photo);
+                viewHolder.ivPic.setImageResource(R.mipmap.morephoto_icon_add);
             }
         }
-        setRelativeLayoutWH(viewHolder.ivPic, height, height);
-        viewHolder.ivPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mImageList.size() != maxCounts && getCount() - 1 == position) {
-                    DeviceUtils.closeKeyBoard((Activity)mContext);
+                    DeviceUtils.closeKeyBoard((Activity) mContext);
                     showChooseMenu.show();
                 } else {
                     String strArray[] = {mContext.getString(R.string.uimage_delete)};
@@ -120,16 +126,32 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         });
         return convertView;
     }
+
     private void setRelativeLayoutWH(View view, int width, int height) {
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
         params.width = width;
         params.height = height;
         view.setLayoutParams(params);
     }
+
     class ViewHolder {
         ImageView ivPic;
     }
-    public interface ShowChooseMenu{
+
+    public interface ShowChooseMenu {
         void show();
-    };
+    }
+
+    private Integer intToObject(int i) {
+        try {
+            return i;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    //加载本地图片
+    public static void loadFileUrl(SimpleDraweeView sdv, String path) {
+        sdv.setImageURI(Uri.parse("file://" + path));
+    }
 }

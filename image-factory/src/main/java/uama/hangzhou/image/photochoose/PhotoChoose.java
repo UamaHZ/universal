@@ -33,24 +33,79 @@ public class PhotoChoose {
     private MyGridView myGridView;
     private ArrayList<String> mImageList;//保存选择的图片非常重要
     private int maxCounts;//最大选择图片数量
+    private int columnCount = 4;//一行显示item的数量
     private Activity activity;
     private String mNewImageFilePath;
-    private int color;
-    private int checkBg;
+    private int color;//选择图片页面titleBar 背景色
+    private int checkBg;//选择框checkBox
+    private boolean firstIsCamera = true;
+    private int cameraBg;//第一张拍照背景图
+    private int cameraSrc;//第一张图片资源图
+    private int divide = -1;//间距
 
-    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts) {
+    /**
+     *
+     * @param maxCounts 最大选择图片数量
+     * @param columnCount 一行显示数量
+     */
+    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, int columnCount) {
         this.myGridView = myGridView;
         this.activity = activity;
         this.maxCounts = maxCounts;
+        this.columnCount = columnCount;
+        myGridView.setNumColumns(columnCount);
+        init();
+    }
+    /**
+     *
+     * @param maxCounts 最大选择图片数量
+     * @param columnCount 一行显示数量
+     * @param firstIsCamera 是否带拍照的选择图片
+     */
+    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, int columnCount,boolean firstIsCamera) {
+        this.myGridView = myGridView;
+        this.activity = activity;
+        this.maxCounts = maxCounts;
+        this.columnCount = columnCount;
+        this.firstIsCamera = firstIsCamera;
+        myGridView.setNumColumns(columnCount);
         init();
     }
 
+    /**
+     *
+     * @param maxCounts 最大选择图片数量
+     * @param columnCount 一行显示数量
+     * @param divide 间距
+     * @param firstIsCamera 是否带拍照的选择图片
+     *  一行显示的数量的间距必须对应上使用
+     */
+    public PhotoChoose(Activity activity, MyGridView myGridView, int maxCounts, int columnCount,int divide,boolean firstIsCamera) {
+        this.myGridView = myGridView;
+        this.activity = activity;
+        this.maxCounts = maxCounts;
+        this.columnCount = columnCount;
+        this.firstIsCamera = firstIsCamera;
+        this.divide = divide;
+        myGridView.setNumColumns(columnCount);
+        init();
+    }
     private void init() {
         mImageList = new ArrayList<>();
-        PublishImageGridVIewAdapter imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList, maxCounts, new PublishImageGridVIewAdapter.ShowChooseMenu() {
+        PublishImageGridVIewAdapter imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList,
+                maxCounts, columnCount, divide,new PublishImageGridVIewAdapter.ShowChooseMenu() {
             @Override
             public void show() {
-                showPopupWindow();
+                if(firstIsCamera){
+                    AndPermission.with(activity)
+                            .requestCode(302)
+                            .callback(PhotoChoose.this)
+                            .permission(Manifest.permission.CAMERA,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .start();
+                }else {
+                    showPopupWindow();
+                }
             }
         });
         myGridView.setAdapter(imageGridVIewAdapter);
@@ -101,10 +156,13 @@ public class PhotoChoose {
     //选择照片
     private void goToChooseImage() {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
-        intent.putExtra(PhotoWallActivity.SelectedCounts, mImageList);
+        intent.putExtra(PhotoWallActivity.SelectedImages, mImageList);
         intent.putExtra(PhotoWallActivity.MaxCounts, maxCounts);
-        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR,color);
-        intent.putExtra(PhotoWallActivity.CHECK_BOX_BG,checkBg);
+        intent.putExtra(PhotoWallActivity.FirstCAMERA, firstIsCamera);
+        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, color);
+        intent.putExtra(PhotoWallActivity.CHECK_BOX_BG, checkBg);
+        intent.putExtra(PhotoWallActivity.CAMERA_BG,cameraBg);
+        intent.putExtra(PhotoWallActivity.CAMERA_SRC,cameraSrc);
         activity.startActivityForResult(intent, Constants.ONLY_SELECT_IMAGE);
     }
 
@@ -131,6 +189,7 @@ public class PhotoChoose {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -139,6 +198,15 @@ public class PhotoChoose {
         return mImageList;
     }
 
+    //设置选中的图片列表
+    public void setChooseImageList(ArrayList<String> list){
+        if(list == null){
+            return;
+        }
+        mImageList.clear();
+        mImageList.addAll(list);
+        ((PublishImageGridVIewAdapter) myGridView.getAdapter()).notifyDataSetChanged();
+    }
     //设置title颜色
     public void setTitleColor(int color) {
         this.color = color;
@@ -149,6 +217,12 @@ public class PhotoChoose {
         this.checkBg = checkBg;
     }
 
+    //设置第一张图片背景图
+    public void setCameraBg(int cameraBg){this.cameraBg = cameraBg;}
+
+    //设置第一张图片资源
+    public void setCameraSrc(int cameraSrc){this.cameraSrc = cameraSrc;}
+
     @PermissionYes(300)
     private void getCamera(List<String> grantedPermissions) {
         goToTakePhoto();
@@ -157,7 +231,7 @@ public class PhotoChoose {
     @PermissionNo(300)
     private void noCamera(List<String> grantedPermissions) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setMessage("无法获取摄像头数据，请检查是否已经打开摄像头权限。")
+                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -174,5 +248,32 @@ public class PhotoChoose {
 
     @PermissionNo(301)
     private void noExternal(List<String> grantedPermissions) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setCancelable(false);
+        builder.show();
+    }
+
+    @PermissionYes(302)
+    private void getExternalAndCamera(List<String> grantedPermissions) {
+        goToChooseImage();
+    }
+
+    @PermissionNo(302)
+    private void noExternalAndCamera(List<String> grantedPermissions) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setCancelable(false);
+        builder.show();
     }
 }
