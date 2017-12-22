@@ -1,27 +1,32 @@
-/*
- * 杭州绿漫科技有限公司
- * Copyright (c) 16-6-25 下午3:34.
- */
-
 package uama.hangzhou.image.util;
 
-/**
+/*
+ *
  * Created by gujiajia on 2016/6/25.
  * E-mail 965939858@qq.com
  * Tel: 15050261230
  */
 
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,11 +41,11 @@ public class SDCardImageLoader {
     private Handler handler = new Handler();
 
     private int screenW, screenH;
-    private int maxWidth;
+    public static final int PAGE_SIZE = 200;
 
-    public static SDCardImageLoader getInstance(Context context){
-        synchronized (SDCardImageLoader.class){
-            if (mInstance == null){
+    public static SDCardImageLoader getInstance(Context context) {
+        synchronized (SDCardImageLoader.class) {
+            if (mInstance == null) {
                 mInstance = new SDCardImageLoader(DeviceUtils.getDisplayWidth(context), DeviceUtils.getDisplayHeight(context));
             }
         }
@@ -51,97 +56,17 @@ public class SDCardImageLoader {
         this.screenW = screenW;
         this.screenH = screenH;
 
-        maxWidth = 1000;
-
         // 获取应用程序最大可用内存
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
-        int cacheSize = maxMemory / 8;
-        // 临时改成4M
-        cacheSize = 4 * 1024 * 1024;
+        int cacheSize = maxMemory / 4;
 
-        // 设置图片缓存大小为程序最大可用内存的1/8
+        // 设置图片缓存大小为程序最大可用内存的1/4
         imageCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(String key, Bitmap value) {
                 return value.getRowBytes() * value.getHeight();
             }
         };
-    }
-
-    public Bitmap loadDrawableForPublish(final int smallRate, final String filePath,
-                                         final ImageCallback callback) {
-        // 直接从本地读取
-        executorService.submit(new Runnable() {
-            public void run() {
-                try {
-                    BitmapFactory.Options opt = new BitmapFactory.Options();
-                    opt.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(filePath, opt);
-
-                    // 获取到这个图片的原始宽度和高度
-                    int picWidth = opt.outWidth;
-                    int picHeight = opt.outHeight;
-
-                    //读取图片失败时直接返回
-                    if (picWidth == 0 || picHeight == 0) {
-                        return;
-                    }
-
-                    //初始压缩比例
-                    opt.inSampleSize = smallRate;
-                    // 根据屏的大小和图片大小计算出缩放比例
-                    if (picWidth > picHeight) {
-                        if (picWidth > maxWidth)
-                            opt.inSampleSize *= picWidth / maxWidth;
-                    } else {
-                        if (picHeight > screenH)
-                            opt.inSampleSize *= picHeight / screenH;
-                    }
-
-                    //这次再真正地生成一个有像素的，经过缩放了的bitmap
-                    opt.inJustDecodeBounds = false;
-                    Bitmap bitmap = BitmapFactory.decodeFile(filePath, opt);
-
-                    int bitmapWidth = bitmap.getWidth();
-
-                    if (bitmapWidth > maxWidth){
-                        float scale = (float)maxWidth/(float)bitmap.getWidth();
-                        Matrix matrix = new Matrix();
-                        matrix.postScale(scale, scale); //长和宽放大缩小的比例
-
-                        Bitmap tempBmp = bitmap;
-                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-
-                        tempBmp.recycle();
-                    }
-
-                    int angle = readPictureDegree(filePath);
-
-                    if (angle != 0) {
-                        Matrix m = new Matrix();
-                        int width1 = bitmap.getWidth();
-                        int height1 = bitmap.getHeight();
-                        m.setRotate(angle); // 旋转angle度
-
-                        Bitmap tempBmp = bitmap;
-                        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width1, height1, m, true);
-                        tempBmp.recycle();
-                    }
-
-                    final Bitmap finalBitmap = bitmap;
-                    handler.post(new Runnable() {
-                        public void run() {
-                            callback.imageLoaded(finalBitmap);
-                        }
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        return null;
     }
 
     public Bitmap loadDrawable(final int smallRate, final String filePath,
@@ -244,6 +169,7 @@ public class SDCardImageLoader {
         }
 
     }
+
     public static int readPictureDegree(String path) {
         if (TextUtils.isEmpty(path)) {
             return 0;
@@ -272,5 +198,96 @@ public class SDCardImageLoader {
     public interface ImageCallback {
         // 注意 此方法是用来设置目标对象的图像资源
         public void imageLoaded(Bitmap imageDrawable);
+    }
+
+    /**
+     * 使用ContentProvider读取SD卡所有图片。
+     */
+    public static ArrayList<String> getImagePathsByContentProvider(Context context) {
+        int pageIndex = 0;
+        Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String key_MIME_TYPE = MediaStore.Images.Media.MIME_TYPE;
+        String key_DATA = MediaStore.Images.Media.DATA;
+//        String sortOrder = MediaStore.Images.Media.DATE_TAKEN + " DESC limit " + PAGE_SIZE + " offset " + pageIndex * PAGE_SIZE;
+        ContentResolver mContentResolver = context.getContentResolver();
+
+        // 只查询jpg和png的图片
+        Cursor cursor = mContentResolver.query(mImageUri, new String[]{key_DATA},
+                key_MIME_TYPE + "=? or " + key_MIME_TYPE + "=? or " + key_MIME_TYPE + "=?",
+                new String[]{"image/jpg", "image/jpeg", "image/png"},
+                MediaStore.Images.Media.DATE_MODIFIED);
+        if (cursor == null) {
+            return null;
+        }
+        ArrayList<String> cursorList = null;
+
+        //从最新的图片开始读取.
+        //当cursor中没有数据时，cursor.moveToLast()将返回false
+        if (cursor.moveToLast()) {
+            cursorList = new ArrayList<>();
+
+            while (true) {
+                // 获取图片的路径
+                String path = cursor.getString(0);
+                if (fileIsExists(path)) {
+                    cursorList.add(path);
+                }
+                if (!cursor.moveToPrevious()) {
+                    break;
+                }
+            }
+        }
+        cursor.close();
+        return cursorList;
+    }
+
+    //判断图片是否有效
+    public static boolean fileIsExists(String path) {
+        try {
+            File f = new File(path);
+            if (!f.exists()) {//路径不存在
+                return false;
+            }
+            if (getFileSizes(f) <= 0) {//图片大小为0
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+
+    public static boolean checkIsBitmap(String path) {
+        try {
+            BitmapFactory.Options newOpts = new BitmapFactory.Options();
+            newOpts.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, newOpts);
+            newOpts.inJustDecodeBounds = false;
+            int w = newOpts.outWidth;
+            int h = newOpts.outHeight;
+            if (w <= 0 || h <= 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    //获取文件大小
+    public static long getFileSizes(File f) throws Exception {
+
+        long s = 0;
+        if (f.exists()) {
+            FileInputStream fis = new FileInputStream(f);
+            s = fis.available();
+            fis.close();
+        } else {
+            f.createNewFile();
+            System.out.println("文件夹不存在");
+        }
+
+        return s;
     }
 }

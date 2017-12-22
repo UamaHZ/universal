@@ -156,20 +156,22 @@ public class PhotoChoose {
     //选择照片
     private void goToChooseImage() {
         Intent intent = new Intent(activity, PhotoWallActivity.class);
-        intent.putExtra(PhotoWallActivity.SelectedImages, mImageList);
-        intent.putExtra(PhotoWallActivity.MaxCounts, maxCounts);
-        intent.putExtra(PhotoWallActivity.FirstCAMERA, firstIsCamera);
-        intent.putExtra(PhotoWallActivity.PHOTO_WALL_COLOR, color);
-        intent.putExtra(PhotoWallActivity.CHECK_BOX_BG, checkBg);
-        intent.putExtra(PhotoWallActivity.CAMERA_BG,cameraBg);
-        intent.putExtra(PhotoWallActivity.CAMERA_SRC,cameraSrc);
+        PhotoChooseParams photoChooseParams = new PhotoChooseParams();
+        photoChooseParams.setSelectedImages(mImageList);
+        photoChooseParams.setMaxCounts(maxCounts);
+        photoChooseParams.setTitleColor(color);
+        photoChooseParams.setCheckBoxBg(checkBg);
+        photoChooseParams.setFirstIsCamera(firstIsCamera);
+        photoChooseParams.setDefaultCameraBg(cameraBg);
+        photoChooseParams.setDefaultCameraSrc(cameraSrc);
+        intent.putExtra(PhotoWallActivity.PhotoChooseParams,photoChooseParams);
         activity.startActivityForResult(intent, Constants.ONLY_SELECT_IMAGE);
     }
 
     public void setImageList(int requestCode, int resultCode, Intent data) {
         try {
             if (requestCode == Constants.ONLY_SELECT_IMAGE) {
-                if (resultCode == 1991) {
+                if (resultCode == Constants.PhotoChooseResultCode) {
                     if (data == null) {
                         return;
                     }

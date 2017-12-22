@@ -20,7 +20,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.4.0'
     compile ('com.facebook.fresco:fresco:0.11.0'){
         exclude module: 'support-v4'
         exclude group: 'com.android.support'
@@ -28,5 +28,6 @@ dependencies {
     compile ('com.yanzhenjie:permission:1.1.2'){
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
+    compile 'com.android.support:recyclerview-v7:23.4.0'
 }
 apply from: "bintrayUpload.gradle"

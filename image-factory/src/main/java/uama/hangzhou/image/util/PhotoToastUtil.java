@@ -14,7 +14,7 @@ public class PhotoToastUtil {
     private static Toast mToast;
 
     @SuppressLint("ShowToast")
-    public static void showErrorDialog(Context context, int maxNum) {
+    public static void showErrorMax(Context context, int maxNum) {
         if (mToast == null) {
             mToast = Toast.makeText(context, "最多可以选择" + maxNum + "张照片", Toast.LENGTH_SHORT);
         } else {
@@ -25,11 +25,30 @@ public class PhotoToastUtil {
 
     @SuppressLint("ShowToast")
     public static void showErrorDialog(Context context, String tip) {
+
         if (mToast == null) {
             mToast = Toast.makeText(context, tip, Toast.LENGTH_SHORT);
         } else {
             mToast.setText(tip);
         }
         mToast.show();
+
+
+    }
+
+    @SuppressLint("ShowToast")
+    public static void showErrorDialog(Context context, int tip) {
+        try {
+            if (mToast == null) {
+                mToast = Toast.makeText(context, context.getString(tip), Toast.LENGTH_SHORT);
+            } else {
+                mToast.setText(context.getString(tip));
+            }
+            mToast.show();
+        } catch (Exception e) {
+           if(mToast != null){
+               mToast.cancel();
+           }
+        }
     }
 }

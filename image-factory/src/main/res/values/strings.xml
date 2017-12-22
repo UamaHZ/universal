@@ -7,4 +7,7 @@
     <string name="uimage_confirm">确定</string>
     <string name="uimage_viewpager_indicator">%1$d/%2$d</string>
     <string name="uimage_skip">跳过</string>
+    <string name="uimage_no_choose_image">您还没有选择图片</string>
+    <string name="uimage_no_param">请传入PhotoChooseParams参数</string>
+    <string name="uimage_image_is_unvalid">该图片无效</string>
 </resources>

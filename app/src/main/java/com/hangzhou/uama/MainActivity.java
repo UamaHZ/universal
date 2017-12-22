@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import uama.hangzhou.image.constant.Constants;
 import uama.hangzhou.image.photochoose.FourPicturesChoose;
 import uama.hangzhou.image.photochoose.PhotoChoose;
 import uama.hangzhou.image.widget.MyGridView;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         fourPicturesChoose.setFirstSelectBg(R.mipmap.ols_comment_checkbox_normal);
 
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
-        photoChoose = new PhotoChoose(this, myGridView, 4,3);
+        photoChoose = new PhotoChoose(this, myGridView, 4,3,true);
         photoChoose.setCheckBackground(R.drawable.uimage_selector_checkbox);
 //        photoChoose.setTitleColor(ContextCompat.getColor(this, R.color.green_light));
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 1999){
+        if(resultCode == Constants.PhotoChooseSkip){
             Log.i("ailee","调到下一页");
         }
         fourPicturesChoose.setImageList(requestCode, resultCode, data);
