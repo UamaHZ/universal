@@ -19,6 +19,7 @@ import java.util.List;
 
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.constant.Constants;
+import uama.hangzhou.image.listener.SelectedViewClickListener;
 import uama.hangzhou.image.util.CacheFileUtils;
 import uama.hangzhou.image.widget.MyGridView;
 
@@ -42,6 +43,7 @@ public class PhotoChoose {
     private int cameraBg;//第一张拍照背景图
     private int cameraSrc;//第一张图片资源图
     private int divide = -1;//间距
+    private PublishImageGridVIewAdapter imageGridVIewAdapter;
 
     /**
      *
@@ -92,7 +94,7 @@ public class PhotoChoose {
     }
     private void init() {
         mImageList = new ArrayList<>();
-        PublishImageGridVIewAdapter imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList,
+        imageGridVIewAdapter = new PublishImageGridVIewAdapter(activity, mImageList,
                 maxCounts, columnCount, divide,new PublishImageGridVIewAdapter.ShowChooseMenu() {
             @Override
             public void show() {
@@ -193,6 +195,11 @@ public class PhotoChoose {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //设置已选择图片的点击事件
+    public void setSelectedImageClickListener(SelectedViewClickListener selectedImageClickListener){
+        imageGridVIewAdapter.setClickListener(selectedImageClickListener);
     }
 
     //获取选中的图片列表

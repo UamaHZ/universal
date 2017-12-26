@@ -17,8 +17,8 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
     <style name="dialog_bottom_in" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/uimage_push_bottom_in</item>
-        <item name="@android:windowExitAnimation">@anim/uimage_push_bottom_out</item>
+        <item name="android:windowEnterAnimation">@anim/uimage_push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/uimage_push_bottom_out</item>
     </style>
     <style name="ClubToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="contentInsetStart">0dp</item><!-- 设置该属性解决空白部分-->

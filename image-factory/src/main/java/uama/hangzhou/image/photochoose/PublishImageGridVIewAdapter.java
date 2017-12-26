@@ -27,8 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uama.hangzhou.image.R;
+import uama.hangzhou.image.listener.SelectedViewClickListener;
 import uama.hangzhou.image.util.DeviceUtils;
-import uama.hangzhou.image.util.SDCardImageLoader;
+import uama.hangzhou.image.util.SDImageLoader;
 
 public class PublishImageGridVIewAdapter extends BaseAdapter {
     private Context mContext;
@@ -36,6 +37,8 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
     private int maxCounts;
     private int height;
     private ShowChooseMenu showChooseMenu;
+    private SDImageLoader sdImageLoader;
+    private SelectedViewClickListener selectedViewClickListener;//已选择的view的点击事件
 
     PublishImageGridVIewAdapter(Context context, List<String> mImageList, int maxCounts, int columnCount, int divide,ShowChooseMenu showChooseMenu) {
         mContext = context;
@@ -50,6 +53,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         if (this.mImageList == null) {
             this.mImageList = new ArrayList<>();
         }
+        sdImageLoader = new SDImageLoader();
     }
 
     private void deleteItem(int position) {
@@ -57,6 +61,9 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void setClickListener(SelectedViewClickListener selectedViewClickListener){
+        this.selectedViewClickListener = selectedViewClickListener;
+    }
     @Override
     public int getCount() {
         if (mImageList.size() < maxCounts - 1) {
@@ -94,7 +101,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
             String path = mImageList.get(position);
             viewHolder.ivPic.setTag(path);
             viewHolder.ivPic.setVisibility(View.VISIBLE);
-            SDCardImageLoader.getInstance(mContext).loadImage(4, path, viewHolder.ivPic);
+            sdImageLoader.loadImage(path,viewHolder.ivPic);
         } else {
             if (position == maxCounts && !mImageList.isEmpty()) {
                 viewHolder.ivPic.setVisibility(View.GONE);
@@ -110,6 +117,10 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
                     DeviceUtils.closeKeyBoard((Activity) mContext);
                     showChooseMenu.show();
                 } else {
+                    if(selectedViewClickListener != null){
+                        selectedViewClickListener.click(position,mImageList);
+                        return;
+                    }
                     String strArray[] = {mContext.getString(R.string.uimage_delete)};
                     MessageDialog.showBottomMenu(mContext, strArray, new MessageDialog.MenuDialogOnItemClickListener() {
                         @Override

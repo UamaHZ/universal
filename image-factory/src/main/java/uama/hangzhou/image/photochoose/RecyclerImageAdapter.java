@@ -16,6 +16,7 @@ import uama.hangzhou.image.R;
 import uama.hangzhou.image.browse.ImagePagerActivity;
 import uama.hangzhou.image.util.PhotoToastUtil;
 import uama.hangzhou.image.util.SDCardImageLoader;
+import uama.hangzhou.image.util.SDImageLoader;
 
 /**
  * Created by GuJiaJia on 2017/12/22.
@@ -32,6 +33,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
     private int cameraBg;
     private int cameraSrc;
     private boolean firstIsCamera;
+    private SDImageLoader sdImageLoader;
 
     RecyclerImageAdapter(Context context, List<String> imagePathList, List<String> selectedImageList,
                      int maxNum) {
@@ -39,6 +41,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
         this.imagePathList = imagePathList;
         this.selectedImageList = selectedImageList;
         this.maxNum = maxNum;
+        sdImageLoader = new SDImageLoader();
     }
 
     RecyclerImageAdapter(Context context, List<String> imagePathList, List<String> selectedImageList,
@@ -48,6 +51,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
         this.selectedImageList = selectedImageList;
         this.maxNum = maxNum;
         this.customCheckBoxBg = customCheckBoxBg;
+        sdImageLoader = new SDImageLoader();
     }
 
     RecyclerImageAdapter(Context context, List<String> imagePathList, List<String> selectedImageList,
@@ -61,6 +65,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
         this.cameraSrc = cameraSrc;
         firstIsCamera = true;
         selectedImageList.add(0, "camera");
+        sdImageLoader = new SDImageLoader();
     }
 
     @Override
@@ -74,7 +79,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
         final String filePath = imagePathList.get(position);
         try {
             if(customCheckBoxBg>0){
-                holder.imageView.setBackgroundResource(customCheckBoxBg);
+                holder.checkBox.setBackgroundResource(customCheckBoxBg);
             }
         }catch (Exception e){
         }
@@ -97,7 +102,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
             } else {
                 holder.checkBox.setVisibility(View.VISIBLE);
                 holder.imageView.setTag(filePath);
-                SDCardImageLoader.getInstance(context).loadImage(5, filePath, holder.imageView);
+                sdImageLoader.loadImage(filePath, holder.imageView);
             }
         }
 
@@ -115,6 +120,7 @@ public class RecyclerImageAdapter extends RecyclerView.Adapter<ImageRecyclerHold
                             holder.checkBox.setChecked(true);
                             holder.imageView.setColorFilter(context.getResources().getColor(R.color.uimage_image_checked_bg));
                         }else {
+                            holder.checkBox.setChecked(false);
                             PhotoToastUtil.showErrorDialog(context, context.getString(R.string.uimage_image_is_unvalid));
                         }
                     }

@@ -15,13 +15,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.constant.Constants;
@@ -50,6 +51,8 @@ public class PhotoWallActivity extends FragmentActivity implements View.OnClickL
     private PhotoChooseParams chooseParams;
 
     private List<String> phoneImageList;//手机里面的图片
+    private int curPage;
+    private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,8 @@ public class PhotoWallActivity extends FragmentActivity implements View.OnClickL
             finish();
         }
         phoneImageList = new ArrayList<>();
+        phoneImageList.clear();
+        curPage = 0;
         initView();
     }
 
@@ -68,8 +73,8 @@ public class PhotoWallActivity extends FragmentActivity implements View.OnClickL
         title = (RelativeLayout) findViewById(R.id.ll_comm_topbar);
         albumTitleBarSkip = (TextView) findViewById(R.id.album_title_bar_skip);
         mPhotoWall = (RecyclerView) findViewById(R.id.photo_wall_grid);
-        mPhotoWall.setLayoutManager(new GridLayoutManager(this,3));
-        mPhotoWall.addItemDecoration(new SpaceItemDecoration((int)DeviceUtils.convertDpToPixel(this,2)));
+        mPhotoWall.setLayoutManager(new GridLayoutManager(this, 3));
+        mPhotoWall.addItemDecoration(new SpaceItemDecoration((int) DeviceUtils.convertDpToPixel(this, 2)));
         TextView tvConfirm = (TextView) findViewById(R.id.tv_photo_wall_confirm);
         tvNumber = (TextView) findViewById(R.id.tv_photo_wall_num);
         findViewById(R.id.album_title_bar_cancel).setOnClickListener(this);
@@ -99,26 +104,43 @@ public class PhotoWallActivity extends FragmentActivity implements View.OnClickL
         } else {
             setChooseCounts(selectedImageList.size());
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getData();
-            }
-        }).start();
+
+        getData();
+
     }
 
 
-    //获取手机里面的数据
+    //获取手机第一页里面的数据
     private void getData() {
-        phoneImageList.addAll(SDCardImageLoader.getImagePathsByContentProvider(this));
-        runOnUiThread(new Runnable() {
+        executorService.submit(new Runnable() {
             @Override
             public void run() {
-                adapter.notifyDataSetChanged();
+                SDCardImageLoader.getImagePathsByContentProvider(PhotoWallActivity.this,curPage, new GetImageListener() {
+                    @Override
+                    public void getComplete(final List<String> imageList,final boolean hasNext) {
+                        if(imageList == null || imageList.size()<=0){
+                            return;
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(curPage == 0){
+                                    phoneImageList.clear();
+                                }
+                                curPage++;
+                                phoneImageList.addAll(imageList);
+                                adapter.notifyDataSetChanged();
+                                if(hasNext){
+                                    getData();
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
-
     }
+
 
     //显示选择进度
     public void setChooseCounts(int chooseCounts) {
