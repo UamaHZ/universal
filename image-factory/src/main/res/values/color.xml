@@ -7,4 +7,6 @@
     <color name="uimage_image_checked_bg">#66000000</color>
     <color name="uimage_test">#546dd3</color>
     <color name="uimage_wall_bg">#aaaaaa</color>
+    <color name="preview_bottom_toolbar_bg">#CC000000</color>
+    <color name="preview_bottom_size">#61FFFFFF</color>
 </resources>

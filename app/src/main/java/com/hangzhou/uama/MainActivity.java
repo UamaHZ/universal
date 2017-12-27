@@ -1,17 +1,23 @@
 package com.hangzhou.uama;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import uama.hangzhou.image.album.Matisse;
+import uama.hangzhou.image.album.MimeType;
+import uama.hangzhou.image.album.engine.impl.GlideEngine;
+import uama.hangzhou.image.album.internal.entity.CaptureStrategy;
 import uama.hangzhou.image.constant.Constants;
 import uama.hangzhou.image.photochoose.FourPicturesChoose;
 import uama.hangzhou.image.photochoose.PhotoChoose;
@@ -45,17 +51,27 @@ public class MainActivity extends AppCompatActivity {
         viewSparseArray.put(0,image1);
         viewSparseArray.put(1,image2);
         fourPicturesChoose = new FourPicturesChoose(this,viewSparseArray);
-//        fourPicturesChoose.setTitleColor(ContextCompat.getColor(this, R.color.green_light));
-        fourPicturesChoose.setCheckBackground(R.drawable.ols_comment_checkbox);
-        fourPicturesChoose.setFirstSelectBg(R.mipmap.ols_comment_checkbox_normal);
 
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
         photoChoose = new PhotoChoose(this, myGridView, 4,3,true);
-        photoChoose.setCheckBackground(R.drawable.uimage_selector_checkbox);
-//        photoChoose.setTitleColor(ContextCompat.getColor(this, R.color.green_light));
+        photoChoose.setCanSkip(true);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Matisse.from(MainActivity.this)
+                        .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
+                        .countable(true)
+                        .capture(true)
+                        .captureStrategy(
+                                new CaptureStrategy(true, BuildConfig.APPLICATION_ID+".provider"))
+                        .theme(R.style.Matisse_Mine)
+                        .maxSelectable(9)
+                        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .setSkip(true)
+                        .imageEngine(new GlideEngine())
+                        .forResult(100);
             }
         });
     }

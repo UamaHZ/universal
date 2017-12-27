@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uama.hangzhou.image.R;
+import uama.hangzhou.image.album.Matisse;
+import uama.hangzhou.image.album.MimeType;
+import uama.hangzhou.image.album.engine.impl.GlideEngine;
+import uama.hangzhou.image.album.internal.entity.CaptureStrategy;
 import uama.hangzhou.image.constant.Constants;
 import uama.hangzhou.image.util.CacheFileUtils;
 import uama.hangzhou.image.util.ImageSword;
@@ -39,12 +44,10 @@ public class FourPicturesChoose {
     private Activity activity;
     private ArrayList<String> imageList;
     private String mNewImageFilePath;
-    private int color;
-    private int checkBg;
     private int firstDefaultBg = -1, secondDefaultBg = -1;//第一张和第二张的默认背景
     private boolean firstIsCamera = true;
-    private int cameraBg;//第一张拍照背景图
-    private int cameraSrc;//第一张图片资源图
+
+    private boolean canSkip = true;//是否有跳过
 
     public FourPicturesChoose(Activity activity, SparseArray<ImageView> nImageViewList) {
         this.activity = activity;
@@ -197,17 +200,32 @@ public class FourPicturesChoose {
 
     //选择照片
     private void goToChooseImage() {
-        Intent intent = new Intent(activity, PhotoWallActivity.class);
-        PhotoChooseParams photoChooseParams = new PhotoChooseParams();
-        photoChooseParams.setSelectedImages(imageList);
-        photoChooseParams.setMaxCounts(imageViewList.size());
-        photoChooseParams.setTitleColor(color);
-        photoChooseParams.setCheckBoxBg(checkBg);
-        photoChooseParams.setFirstIsCamera(firstIsCamera);
-        photoChooseParams.setDefaultCameraBg(cameraBg);
-        photoChooseParams.setDefaultCameraSrc(cameraSrc);
-        intent.putExtra(PhotoWallActivity.PhotoChooseParams,photoChooseParams);
-        activity.startActivityForResult(intent, Constants.FOUR_SELECT_IMAGE);
+//        Intent intent = new Intent(activity, PhotoWallActivity.class);
+//        PhotoChooseParams photoChooseParams = new PhotoChooseParams();
+//        photoChooseParams.setSelectedImages(imageList);
+//        photoChooseParams.setMaxCounts(imageViewList.size());
+//        photoChooseParams.setTitleColor(color);
+//        photoChooseParams.setCheckBoxBg(checkBg);
+//        photoChooseParams.setFirstIsCamera(firstIsCamera);
+//        photoChooseParams.setDefaultCameraBg(cameraBg);
+//        photoChooseParams.setDefaultCameraSrc(cameraSrc);
+//        intent.putExtra(PhotoWallActivity.PhotoChooseParams,photoChooseParams);
+//        activity.startActivityForResult(intent, Constants.FOUR_SELECT_IMAGE);
+
+        Matisse.from(activity)
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
+                .countable(true)
+                .capture(firstIsCamera)
+                .captureStrategy(
+                        new CaptureStrategy(true, "uama.hangzhou.image.fileprovider"))
+                .theme(R.style.Matisse_Uama)
+                .maxSelectable(4 - imageList.size())
+                .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.uimage_grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .setSkip(canSkip)
+                .imageEngine(new GlideEngine())
+                .forResult(Constants.FOUR_SELECT_IMAGE);
     }
 
     public void setImageList(int requestCode, int resultCode, Intent data) {
@@ -221,12 +239,12 @@ public class FourPicturesChoose {
                     upDateImageGroup();
                 }
             } else if (requestCode == Constants.FOUR_SELECT_IMAGE) {
-                if (resultCode == Constants.PhotoChooseResultCode) {
+                if (resultCode == Activity.RESULT_OK) {
                     if (data == null) {
                         return;
                     }
                     imageList.clear();
-                    imageList.addAll(data.getStringArrayListExtra("paths"));
+                    imageList.addAll(Matisse.obtainPathResult(data));
                     upDateImageGroup();
                 }
             }
@@ -252,38 +270,14 @@ public class FourPicturesChoose {
         }
     }
 
+    public void setCanSkip(boolean canSkip){
+        this.canSkip = canSkip;
+    }
+
     //获取选中的图片list
     public ArrayList<String> getChosenImageList() {
         return imageList;
     }
-
-    //设置title颜色
-    public void setTitleColor(int color) {
-        this.color = color;
-    }
-
-    //设置checkBox的背景
-    public void setCheckBackground(int checkBg) {
-        this.checkBg = checkBg;
-    }
-
-    //设置第一张默认图
-    public void setFirstSelectBg(int bg) {
-        firstDefaultBg = bg;
-        setDefaultBg();
-    }
-
-    //设置第二张默认图
-    public void setSecondSelectBg(int bg) {
-        secondDefaultBg = bg;
-        setDefaultBg();
-    }
-
-    //设置第一张图片背景图
-    public void setCameraBg(int cameraBg){this.cameraBg = cameraBg;}
-
-    //设置第一张图片资源
-    public void setCameraSrc(int cameraSrc){this.cameraSrc = cameraSrc;}
 
     @PermissionYes(302)
     private void getCamera(List<String> grantedPermissions) {

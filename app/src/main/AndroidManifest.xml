@@ -30,7 +30,6 @@
 
         <activity android:name=".Main2Activity">
         </activity>
-        <activity android:name="com.tangxiaolv.telegramgallery.GalleryActivity" />
     </application>
 
 </manifest>
