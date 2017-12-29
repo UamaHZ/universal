@@ -28,6 +28,7 @@ import uama.hangzhou.image.album.engine.impl.GlideEngine;
 import uama.hangzhou.image.album.internal.entity.CaptureStrategy;
 import uama.hangzhou.image.constant.Constants;
 import uama.hangzhou.image.util.CacheFileUtils;
+import uama.hangzhou.image.util.ImageCalculateUtil;
 import uama.hangzhou.image.util.ImageSword;
 
 
@@ -180,7 +181,7 @@ public class FourPicturesChoose {
         try {
             setDefaultBg();
             for (int i = 0; i < imageList.size(); i++) {
-                imageViewList.get(i).setImageBitmap(ImageSword.getImage(imageList.get(i)));
+                imageViewList.get(i).setImageBitmap(ImageCalculateUtil.getSmallBitmap(imageList.get(i), 480, 480));
             }
         } catch (Exception e) {
         }
@@ -200,24 +201,12 @@ public class FourPicturesChoose {
 
     //选择照片
     private void goToChooseImage() {
-//        Intent intent = new Intent(activity, PhotoWallActivity.class);
-//        PhotoChooseParams photoChooseParams = new PhotoChooseParams();
-//        photoChooseParams.setSelectedImages(imageList);
-//        photoChooseParams.setMaxCounts(imageViewList.size());
-//        photoChooseParams.setTitleColor(color);
-//        photoChooseParams.setCheckBoxBg(checkBg);
-//        photoChooseParams.setFirstIsCamera(firstIsCamera);
-//        photoChooseParams.setDefaultCameraBg(cameraBg);
-//        photoChooseParams.setDefaultCameraSrc(cameraSrc);
-//        intent.putExtra(PhotoWallActivity.PhotoChooseParams,photoChooseParams);
-//        activity.startActivityForResult(intent, Constants.FOUR_SELECT_IMAGE);
-
         Matisse.from(activity)
                 .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
                 .countable(true)
                 .capture(firstIsCamera)
                 .captureStrategy(
-                        new CaptureStrategy(true, "uama.hangzhou.image.fileprovider"))
+                        new CaptureStrategy(true, activity.getString(R.string.aplicationId)+".provider"))
                 .theme(R.style.Matisse_Uama)
                 .maxSelectable(4 - imageList.size())
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.uimage_grid_expected_size))
@@ -243,7 +232,6 @@ public class FourPicturesChoose {
                     if (data == null) {
                         return;
                     }
-                    imageList.clear();
                     imageList.addAll(Matisse.obtainPathResult(data));
                     upDateImageGroup();
                 }

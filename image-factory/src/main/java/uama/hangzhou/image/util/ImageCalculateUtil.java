@@ -2,6 +2,7 @@ package uama.hangzhou.image.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.text.TextUtils;
 
@@ -53,7 +54,19 @@ public class ImageCalculateUtil {
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(filePath, options);
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+
+        int angle = readPictureDegree(filePath);
+        if (angle != 0) {
+            Matrix m = new Matrix();
+            int width1 = bitmap.getWidth();
+            int height1 = bitmap.getHeight();
+            m.setRotate(angle); // 旋转angle度
+            Bitmap tempBmp = bitmap;
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width1, height1, m, true);
+            tempBmp.recycle();
+        }
+        return bitmap;
     }
 
     public static int readPictureDegree(String path) {

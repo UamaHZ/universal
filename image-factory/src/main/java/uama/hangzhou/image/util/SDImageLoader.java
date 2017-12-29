@@ -76,22 +76,11 @@ public class SDImageLoader {
         }
         executorService.submit(new Runnable() {
             public void run() {
-                Bitmap bitmap = ImageCalculateUtil.getSmallBitmap(filePath, 480, 480);
-                int angle = readPictureDegree(filePath);
-                if (angle != 0) {
-                    Matrix m = new Matrix();
-                    int width1 = bitmap.getWidth();
-                    int height1 = bitmap.getHeight();
-                    m.setRotate(angle); // 旋转angle度
-                    Bitmap tempBmp = bitmap;
-                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, width1, height1, m, true);
-                    tempBmp.recycle();
-                }
+                final Bitmap bitmap = ImageCalculateUtil.getSmallBitmap(filePath, 480, 480);
                 imageCache.put(filePath, bitmap);
-                final Bitmap finalBitmap = bitmap;
                 handler.post(new Runnable() {
                     public void run() {
-                        callback.imageLoaded(finalBitmap);
+                        callback.imageLoaded(bitmap);
                     }
                 });
             }

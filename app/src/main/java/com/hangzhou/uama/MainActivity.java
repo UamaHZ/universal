@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         image4 = (ImageView) findViewById(R.id.photo_choose_img4);
         viewSparseArray.put(0,image1);
         viewSparseArray.put(1,image2);
+        viewSparseArray.put(2,image3);
+        viewSparseArray.put(3,image4);
         fourPicturesChoose = new FourPicturesChoose(this,viewSparseArray);
 
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);

@@ -22,7 +22,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths_public"/>
         </provider>
-        <activity android:name="uama.hangzhou.image.album.ui.MatisseActivity"/>
+        <activity android:name="uama.hangzhou.image.album.ui.MatisseActivity"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
