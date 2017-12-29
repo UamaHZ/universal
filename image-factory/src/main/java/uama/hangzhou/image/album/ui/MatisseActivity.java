@@ -31,13 +31,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
+import java.util.List;
 
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.album.MatisseConstant;
@@ -46,15 +47,13 @@ import uama.hangzhou.image.album.internal.entity.Item;
 import uama.hangzhou.image.album.internal.entity.SelectionSpec;
 import uama.hangzhou.image.album.internal.model.AlbumCollection;
 import uama.hangzhou.image.album.internal.model.SelectedItemCollection;
-import uama.hangzhou.image.album.internal.ui.AlbumPreviewActivity;
-import uama.hangzhou.image.album.internal.ui.BasePreviewActivity;
 import uama.hangzhou.image.album.internal.ui.MediaSelectionFragment;
-import uama.hangzhou.image.album.internal.ui.SelectedPreviewActivity;
 import uama.hangzhou.image.album.internal.ui.adapter.AlbumMediaAdapter;
 import uama.hangzhou.image.album.internal.ui.adapter.AlbumsAdapter;
 import uama.hangzhou.image.album.internal.ui.widget.AlbumsSpinner;
 import uama.hangzhou.image.album.internal.utils.MediaStoreCompat;
 import uama.hangzhou.image.album.internal.utils.PathUtils;
+import uama.hangzhou.image.browse.ImagePagerActivity;
 
 /**
  * Main Activity to display albums and media content (images/videos) in each album
@@ -69,7 +68,6 @@ public class MatisseActivity extends AppCompatActivity implements
     public static final String EXTRA_RESULT_SELECTION = "extra_result_selection";
     public static final String EXTRA_RESULT_SELECTION_PATH = "extra_result_selection_path";
     public static final String SHOW_SKIP = "SHOW_SKIP";
-    private static final int REQUEST_CODE_PREVIEW = 23;
     private static final int REQUEST_CODE_CAPTURE = 24;
     private final AlbumCollection mAlbumCollection = new AlbumCollection();
     private MediaStoreCompat mMediaStoreCompat;
@@ -171,36 +169,7 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK)
             return;
-
-        if (requestCode == REQUEST_CODE_PREVIEW) {
-            Bundle resultBundle = data.getBundleExtra(BasePreviewActivity.EXTRA_RESULT_BUNDLE);
-            ArrayList<Item> selected = resultBundle.getParcelableArrayList(SelectedItemCollection.STATE_SELECTION);
-            int collectionType = resultBundle.getInt(SelectedItemCollection.STATE_COLLECTION_TYPE,
-                    SelectedItemCollection.COLLECTION_UNDEFINED);
-            if (data.getBooleanExtra(BasePreviewActivity.EXTRA_RESULT_APPLY, false)) {
-                Intent result = new Intent();
-                ArrayList<Uri> selectedUris = new ArrayList<>();
-                ArrayList<String> selectedPaths = new ArrayList<>();
-                if (selected != null) {
-                    for (Item item : selected) {
-                        selectedUris.add(item.getContentUri());
-                        selectedPaths.add(PathUtils.getPath(this, item.getContentUri()));
-                    }
-                }
-                result.putParcelableArrayListExtra(EXTRA_RESULT_SELECTION, selectedUris);
-                result.putStringArrayListExtra(EXTRA_RESULT_SELECTION_PATH, selectedPaths);
-                setResult(RESULT_OK, result);
-                finish();
-            } else {
-                mSelectedCollection.overwrite(selected, collectionType);
-                Fragment mediaSelectionFragment = getSupportFragmentManager().findFragmentByTag(
-                        MediaSelectionFragment.class.getSimpleName());
-                if (mediaSelectionFragment instanceof MediaSelectionFragment) {
-                    ((MediaSelectionFragment) mediaSelectionFragment).refreshMediaGrid();
-                }
-                updateBottomToolbar();
-            }
-        } else if (requestCode == REQUEST_CODE_CAPTURE) {
+        if (requestCode == REQUEST_CODE_CAPTURE) {
             // Just pass the data back to previous calling Activity.
             Uri contentUri = mMediaStoreCompat.getCurrentPhotoUri();
             String path = mMediaStoreCompat.getCurrentPhotoPath();
@@ -239,9 +208,16 @@ public class MatisseActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_preview) {
-            Intent intent = new Intent(this, SelectedPreviewActivity.class);
-            intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
-            startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+            if(mSelectedCollection.asListOfString() != null && mSelectedCollection.asListOfString().size()>0){
+                Intent intent = new Intent(this, ImagePagerActivity.class);
+                List<String> newPathList = new ArrayList<>();
+                for(int i = 0;i<mSelectedCollection.asListOfString().size();i++){
+                    newPathList.add("file://"+mSelectedCollection.asListOfString().get(i));
+                }
+                intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) newPathList);
+                intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
+                startActivity(intent);
+            }
         } else if (v.getId() == R.id.button_apply) {
             Intent result = new Intent();
             ArrayList<Uri> selectedUris = (ArrayList<Uri>) mSelectedCollection.asListOfUri();
@@ -321,11 +297,15 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void onMediaClick(Album album, Item item, int adapterPosition) {
-        Intent intent = new Intent(this, AlbumPreviewActivity.class);
-        intent.putExtra(AlbumPreviewActivity.EXTRA_ALBUM, album);
-        intent.putExtra(AlbumPreviewActivity.EXTRA_ITEM, item);
-        intent.putExtra(BasePreviewActivity.EXTRA_DEFAULT_BUNDLE, mSelectedCollection.getDataWithBundle());
-        startActivityForResult(intent, REQUEST_CODE_PREVIEW);
+        Log.i("ailee","图片选择");
+        if(item != null){
+            Intent intent = new Intent(this, ImagePagerActivity.class);
+            List<String> newPathList = new ArrayList<>();
+            newPathList.add("file://"+PathUtils.getPath(this,item.getContentUri()));
+            intent.putStringArrayListExtra(ImagePagerActivity.EXTRA_IMAGE_URLS, (ArrayList<String>) newPathList);
+            intent.putExtra(ImagePagerActivity.EXTRA_IMAGE_INDEX, 0);
+            startActivity(intent);
+        }
     }
 
     @Override

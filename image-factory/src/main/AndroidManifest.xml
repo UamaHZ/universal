@@ -23,8 +23,6 @@
                 android:resource="@xml/file_paths_public"/>
         </provider>
         <activity android:name="uama.hangzhou.image.album.ui.MatisseActivity"/>
-        <activity android:name="uama.hangzhou.image.album.internal.ui.AlbumPreviewActivity"/>
-        <activity android:name="uama.hangzhou.image.album.internal.ui.SelectedPreviewActivity"/>
     </application>
 
 </manifest>

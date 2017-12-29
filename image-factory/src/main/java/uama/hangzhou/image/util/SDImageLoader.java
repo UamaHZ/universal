@@ -1,6 +1,7 @@
 package uama.hangzhou.image.util;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.widget.ImageView;
@@ -9,6 +10,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import uama.hangzhou.image.R;
+
+import static uama.hangzhou.image.util.ImageCalculateUtil.readPictureDegree;
 
 /**
  * Created by GuJiaJia on 2017/12/25.
@@ -73,11 +76,22 @@ public class SDImageLoader {
         }
         executorService.submit(new Runnable() {
             public void run() {
-                final Bitmap bitmap = ImageCalculateUtil.getSmallBitmap(filePath, 480, 480);
+                Bitmap bitmap = ImageCalculateUtil.getSmallBitmap(filePath, 480, 480);
+                int angle = readPictureDegree(filePath);
+                if (angle != 0) {
+                    Matrix m = new Matrix();
+                    int width1 = bitmap.getWidth();
+                    int height1 = bitmap.getHeight();
+                    m.setRotate(angle); // 旋转angle度
+                    Bitmap tempBmp = bitmap;
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, width1, height1, m, true);
+                    tempBmp.recycle();
+                }
                 imageCache.put(filePath, bitmap);
+                final Bitmap finalBitmap = bitmap;
                 handler.post(new Runnable() {
                     public void run() {
-                        callback.imageLoaded(bitmap);
+                        callback.imageLoaded(finalBitmap);
                     }
                 });
             }
