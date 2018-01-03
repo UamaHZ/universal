@@ -202,7 +202,7 @@ public class FourPicturesChoose {
     //选择照片
     private void goToChooseImage() {
         Matisse.from(activity)
-                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG,MimeType.WEBP))
                 .countable(true)
                 .capture(firstIsCamera)
                 .captureStrategy(
@@ -269,47 +269,47 @@ public class FourPicturesChoose {
 
     @PermissionYes(302)
     private void getCamera(List<String> grantedPermissions) {
-        goToTakePhoto();
+        if(AndPermission.hasPermission(activity,grantedPermissions)){
+            goToTakePhoto();
+        }else{
+            showNoPermissionDialog();
+        }
     }
 
     @PermissionNo(302)
     private void noCamera(List<String> grantedPermissions) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setCancelable(false);
-        builder.show();
+        showNoPermissionDialog();
     }
 
     @PermissionYes(303)
     private void getExternal(List<String> grantedPermissions) {
-        goToChooseImage();
+        if(AndPermission.hasPermission(activity,grantedPermissions)){
+            goToChooseImage();
+        }else {
+            showNoPermissionDialog();
+        }
     }
 
     @PermissionNo(303)
     private void noExternal(List<String> grantedPermissions) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setCancelable(false);
-        builder.show();
+        showNoPermissionDialog();
     }
 
     @PermissionYes(304)
     private void getExternalAndCamera(List<String> grantedPermissions) {
-        goToChooseImage();
+        if(AndPermission.hasPermission(activity,grantedPermissions)){
+            goToChooseImage();
+        }else {
+            showNoPermissionDialog();
+        }
     }
 
     @PermissionNo(304)
     private void noExternalAndCamera(List<String> grantedPermissions) {
+       showNoPermissionDialog();
+    }
+
+    private void showNoPermissionDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
