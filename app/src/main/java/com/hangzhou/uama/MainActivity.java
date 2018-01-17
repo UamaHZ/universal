@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
         photoChoose = new PhotoChoose(this, myGridView, 4,3,true);
         photoChoose.setCanSkip(true);
+        photoChoose.setRequestCode(1002,1100);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

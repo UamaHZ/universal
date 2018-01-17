@@ -49,6 +49,9 @@ public class PhotoChoose {
     private PublishImageGridVIewAdapter imageGridVIewAdapter;
     private boolean canSkip = true;//是否有跳过
 
+    private int REQUEST_CODE_CHOOSE = -1;
+    private int REQUEST_CODE_CAMERA = -1;
+
     /**
      * @param maxCounts   最大选择图片数量
      * @param columnCount 一行显示数量
@@ -94,7 +97,6 @@ public class PhotoChoose {
         myGridView.setNumColumns(columnCount);
         init();
     }
-
 
 
     private void init() {
@@ -157,17 +159,17 @@ public class PhotoChoose {
         Uri uri = activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         intent.putExtra(MediaStore.Images.ImageColumns.ORIENTATION, 0);
-        activity.startActivityForResult(intent, Constants.ONLY_TAKE_PHOTO);
+        activity.startActivityForResult(intent, REQUEST_CODE_CAMERA == -1 ? Constants.ONLY_TAKE_PHOTO : REQUEST_CODE_CAMERA);
     }
 
     //选择照片
     private void goToChooseImage() {
         Matisse.from(activity)
-                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG,MimeType.WEBP))
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.WEBP))
                 .countable(true)
                 .capture(firstIsCamera)
                 .captureStrategy(
-                        new CaptureStrategy(true, activity.getString(R.string.aplicationId)+".provider"))
+                        new CaptureStrategy(true, activity.getString(R.string.aplicationId) + ".provider"))
                 .theme(R.style.Matisse_Uama)
                 .maxSelectable(maxCounts - mImageList.size())
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.uimage_grid_expected_size))
@@ -175,12 +177,19 @@ public class PhotoChoose {
                 .thumbnailScale(0.85f)
                 .setSkip(canSkip)
                 .imageEngine(new GlideEngine())
-                .forResult(Constants.ONLY_SELECT_IMAGE);
+                .forResult(REQUEST_CODE_CHOOSE == -1 ? Constants.ONLY_SELECT_IMAGE : REQUEST_CODE_CHOOSE);
+    }
+
+
+    //添加一个请求code
+    public void setRequestCode(int chooseCode, int cameraCode) {
+        REQUEST_CODE_CHOOSE = chooseCode;
+        REQUEST_CODE_CAMERA = cameraCode;
     }
 
     public void setImageList(int requestCode, int resultCode, Intent data) {
         try {
-            if (requestCode == Constants.ONLY_SELECT_IMAGE) {
+            if (requestCode == (REQUEST_CODE_CHOOSE == -1 ? Constants.ONLY_SELECT_IMAGE : REQUEST_CODE_CHOOSE)) {
                 if (resultCode == RESULT_OK) {
                     if (data == null) {
                         return;
@@ -188,7 +197,7 @@ public class PhotoChoose {
                     mImageList.addAll(Matisse.obtainPathResult(data));
                     imageGridVIewAdapter.notifyDataSetChanged();
                 }
-            } else if (requestCode == Constants.ONLY_TAKE_PHOTO) {
+            } else if (requestCode == (REQUEST_CODE_CAMERA == -1 ? Constants.ONLY_TAKE_PHOTO : REQUEST_CODE_CAMERA)) {
                 if (resultCode == RESULT_OK) {
                     File imageFile = new File(mNewImageFilePath);
                     Uri uri = Uri.fromFile(imageFile);
@@ -202,9 +211,10 @@ public class PhotoChoose {
         }
     }
 
-    public void setCanSkip(boolean canSkip){
+    public void setCanSkip(boolean canSkip) {
         this.canSkip = canSkip;
     }
+
     //设置已选择图片的点击事件
     public void setSelectedImageClickListener(SelectedViewClickListener selectedImageClickListener) {
         imageGridVIewAdapter.setClickListener(selectedImageClickListener);
@@ -228,9 +238,9 @@ public class PhotoChoose {
 
     @PermissionYes(300)
     private void getCamera(List<String> grantedPermissions) {
-        if(AndPermission.hasPermission(activity,grantedPermissions)){
+        if (AndPermission.hasPermission(activity, grantedPermissions)) {
             goToTakePhoto();
-        }else{
+        } else {
             showNoPermissionDialog();
         }
     }
@@ -242,9 +252,9 @@ public class PhotoChoose {
 
     @PermissionYes(301)
     private void getExternal(List<String> grantedPermissions) {
-        if(AndPermission.hasPermission(activity,grantedPermissions)){
+        if (AndPermission.hasPermission(activity, grantedPermissions)) {
             goToChooseImage();
-        }else {
+        } else {
             showNoPermissionDialog();
         }
     }
@@ -256,19 +266,19 @@ public class PhotoChoose {
 
     @PermissionYes(302)
     private void getExternalAndCamera(List<String> grantedPermissions) {
-        if(AndPermission.hasPermission(activity,grantedPermissions)){
+        if (AndPermission.hasPermission(activity, grantedPermissions)) {
             goToChooseImage();
-        }else {
+        } else {
             showNoPermissionDialog();
         }
     }
 
     @PermissionNo(302)
     private void noExternalAndCamera(List<String> grantedPermissions) {
-       showNoPermissionDialog();
+        showNoPermissionDialog();
     }
 
-    private void showNoPermissionDialog(){
+    private void showNoPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {

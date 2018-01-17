@@ -82,12 +82,19 @@ public class MatisseActivity extends AppCompatActivity implements
     private View mContainer;
     private View mEmptyView;
 
+    private boolean abnormalCreate;//非正常创建
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         // programmatically set theme before super.onCreate()
         mSpec = SelectionSpec.getInstance();
         setTheme(mSpec.themeId);
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            abnormalCreate = true;
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_matisse);
         if (mSpec.needOrientationRestriction()) {
             setRequestedOrientation(mSpec.orientation);
@@ -139,13 +146,14 @@ public class MatisseActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         mSelectedCollection.onSaveInstanceState(outState);
         mAlbumCollection.onSaveInstanceState(outState);
-        finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAlbumCollection.onDestroy();
+        if(!abnormalCreate){
+            mAlbumCollection.onDestroy();
+        }
     }
 
     @Override
@@ -296,7 +304,6 @@ public class MatisseActivity extends AppCompatActivity implements
 
     @Override
     public void onMediaClick(Album album, Item item, int adapterPosition) {
-        Log.i("ailee","图片选择");
         if(item != null){
             Intent intent = new Intent(this, ImagePagerActivity.class);
             List<String> newPathList = new ArrayList<>();
