@@ -89,7 +89,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.uimage_publish_gridview_item, parent, false);
-            viewHolder.ivPic = (ImageView) convertView.findViewById(R.id.iv_grid_item);
+            viewHolder.ivPic = (SimpleDraweeView) convertView.findViewById(R.id.iv_grid_item);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -146,7 +146,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        ImageView ivPic;
+        SimpleDraweeView ivPic;
     }
 
     public interface ShowChooseMenu {

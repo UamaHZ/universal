@@ -11,9 +11,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by gujiajia on 2016/6/27.
@@ -65,5 +68,15 @@ public class CacheFileUtils {
             }
         }
         return data;
+    }
+
+    public static boolean isHttpUrl(String urls) {
+        if (!TextUtils.isEmpty(urls) && urls.length() > 5) {
+            if (urls.substring(0, 3).toLowerCase().equals("ftp") || urls.substring(0, 4).toLowerCase().equals("http")) {
+                return true;
+            }
+        }
+        return false;
+
     }
 }

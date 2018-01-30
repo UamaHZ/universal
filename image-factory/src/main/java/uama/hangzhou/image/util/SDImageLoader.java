@@ -2,9 +2,12 @@ package uama.hangzhou.image.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.widget.ImageView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -46,7 +49,11 @@ public class SDImageLoader {
      * @param filePath  图片在SD卡的全路径
      * @param imageView 组件
      */
-    public void loadImage(final String filePath, final ImageView imageView) {
+    public void loadImage(final String filePath, final SimpleDraweeView imageView) {
+        if(CacheFileUtils.isHttpUrl(filePath)){
+            imageView.setImageURI(Uri.parse(filePath));
+            return;
+        }
         samplingRateCompress(filePath, new ImageCallback() {
             @Override
             public void imageLoaded(Bitmap bmp) {
