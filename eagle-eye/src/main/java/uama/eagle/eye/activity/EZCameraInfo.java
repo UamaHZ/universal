@@ -28,6 +28,8 @@ public class EZCameraInfo implements Serializable {
     String isShared;
     String deviceId;
     String deviceSerial;
+    int type;
+    String monitorUrl;
 
     public static EZCameraInfo buildBean(JSONObject o) throws JSONException {
         EZCameraInfo tb = new EZCameraInfo();
@@ -49,6 +51,8 @@ public class EZCameraInfo implements Serializable {
         tb.setIsShared(JSONHelper.getString(o, "isShared"));
         tb.setDeviceId(JSONHelper.getString(o, "deviceId"));
         tb.setDeviceSerial(JSONHelper.getString(o, "deviceSerial"));
+        tb.setType(JSONHelper.getInt(o,"type"));
+        tb.setMonitorUrl(JSONHelper.getString(o,"monitorUrl"));
         return tb;
     }
 
@@ -178,5 +182,21 @@ public class EZCameraInfo implements Serializable {
 
     public void setDeviceSerial(String deviceSerial) {
         this.deviceSerial = deviceSerial;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getMonitorUrl() {
+        return monitorUrl;
+    }
+
+    public void setMonitorUrl(String monitorUrl) {
+        this.monitorUrl = monitorUrl;
     }
 }
