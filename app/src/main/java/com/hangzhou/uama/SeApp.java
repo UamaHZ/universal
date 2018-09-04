@@ -7,5 +7,6 @@ public class SeApp extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+
     }
 }

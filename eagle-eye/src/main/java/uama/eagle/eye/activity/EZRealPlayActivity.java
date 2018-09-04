@@ -339,7 +339,6 @@ public class EZRealPlayActivity extends Activity implements OnClickListener, Sur
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         initData();
         initView();
         // ATTENTION: This was auto-generated to implement the App Indexing API.

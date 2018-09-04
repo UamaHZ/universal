@@ -22,6 +22,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':image-factory')
+    compile project(':eagle-eye')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation ('com.facebook.fresco:fresco:0.11.0'){
+        exclude module: 'support-v4'
+        exclude group: 'com.android.support'
+    }
     compile ('com.android.support.constraint:constraint-layout:1.0.0-alpha9'){
         exclude group: 'com.android.support'
     }

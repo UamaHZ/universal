@@ -28,8 +28,9 @@ public class EZCameraInfo implements Serializable {
     String isShared;
     String deviceId;
     String deviceSerial;
-    int type;
-    String monitorUrl;
+    int manufacturer;
+    String hls;
+    String liveToken;
 
     public static EZCameraInfo buildBean(JSONObject o) throws JSONException {
         EZCameraInfo tb = new EZCameraInfo();
@@ -51,8 +52,9 @@ public class EZCameraInfo implements Serializable {
         tb.setIsShared(JSONHelper.getString(o, "isShared"));
         tb.setDeviceId(JSONHelper.getString(o, "deviceId"));
         tb.setDeviceSerial(JSONHelper.getString(o, "deviceSerial"));
-        tb.setType(JSONHelper.getInt(o,"type"));
-        tb.setMonitorUrl(JSONHelper.getString(o,"monitorUrl"));
+        tb.setManufacturer(JSONHelper.getInt(o,"manufacturer"));
+        tb.setHls(JSONHelper.getString(o,"hls"));
+        tb.setLiveToken(JSONHelper.getString(o,"liveToken"));
         return tb;
     }
 
@@ -184,19 +186,28 @@ public class EZCameraInfo implements Serializable {
         this.deviceSerial = deviceSerial;
     }
 
-    public int getType() {
-        return type;
+    public int getManufacturer() {
+        return manufacturer;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setManufacturer(int manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
-    public String getMonitorUrl() {
-        return monitorUrl;
+    public String getHls() {
+        return hls;
     }
 
-    public void setMonitorUrl(String monitorUrl) {
-        this.monitorUrl = monitorUrl;
+    public void setHls(String hls) {
+        this.hls = hls;
     }
+
+    public String getLiveToken() {
+        return liveToken;
+    }
+
+    public void setLiveToken(String liveToken) {
+        this.liveToken = liveToken;
+    }
+
 }
