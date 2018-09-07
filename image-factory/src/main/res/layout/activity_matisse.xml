@@ -50,7 +50,7 @@
                 android:foreground="?selectableItemBackground"
                 android:gravity="right|center_vertical"
                 android:layout_marginRight="15dp"
-                android:text="@string/button_skip"
+                android:text="@string/uimage_skip"
                 android:visibility="gone"
                 android:layout_alignParentRight="true"
                 android:textColor="?attr/album.element.color"
