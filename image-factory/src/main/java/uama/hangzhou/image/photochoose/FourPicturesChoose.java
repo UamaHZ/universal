@@ -13,9 +13,8 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionNo;
-import com.yanzhenjie.permission.PermissionYes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ import uama.hangzhou.image.album.internal.entity.CaptureStrategy;
 import uama.hangzhou.image.constant.Constants;
 import uama.hangzhou.image.util.CacheFileUtils;
 import uama.hangzhou.image.util.ImageCalculateUtil;
-import uama.hangzhou.image.util.ImageSword;
 
 
 /**
@@ -135,10 +133,24 @@ public class FourPicturesChoose {
         } else {
             if(firstIsCamera){
                 AndPermission.with(activity)
-                        .requestCode(304)
-                        .callback(FourPicturesChoose.this)
+                        .runtime()
                         .permission(Manifest.permission.CAMERA,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .onGranted(new Action<List<String>>() {
+                            @Override
+                            public void onAction(List<String> data) {
+                                if(AndPermission.hasAlwaysDeniedPermission(activity,data)){
+                                    goToChooseImage();
+                                }else {
+                                    showNoPermissionDialog();
+                                }
+                            }
+                        }).onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        showNoPermissionDialog();
+                    }
+                })
                         .start();
                 return;
             }
@@ -157,17 +169,46 @@ public class FourPicturesChoose {
                 switch (index) {
                     case 1:
                         AndPermission.with(activity)
-                                .requestCode(303)
-                                .callback(FourPicturesChoose.this)
+                                .runtime()
                                 .permission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .onGranted(new Action<List<String>>() {
+                                    @Override
+                                    public void onAction(List<String> data) {
+                                        if(AndPermission.hasAlwaysDeniedPermission(activity,data)){
+                                            goToChooseImage();
+                                        }else {
+                                            showNoPermissionDialog();
+                                        }
+                                    }
+                                }).onDenied(new Action<List<String>>() {
+                            @Override
+                            public void onAction(List<String> data) {
+                                showNoPermissionDialog();
+                            }
+                        })
                                 .start();
                         break;
                     case 2:
                         AndPermission.with(activity)
-                                .requestCode(302)
-                                .callback(FourPicturesChoose.this)
+                                .runtime()
                                 .permission(Manifest.permission.CAMERA,
                                         Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .onGranted(new Action<List<String>>() {
+                                    @Override
+                                    public void onAction(List<String> data) {
+                                        if(AndPermission.hasAlwaysDeniedPermission(activity,data)){
+                                            goToTakePhoto();
+                                        }else{
+                                            showNoPermissionDialog();
+                                        }
+                                    }
+                                })
+                                .onDenied(new Action<List<String>>() {
+                                    @Override
+                                    public void onAction(List<String> data) {
+                                        showNoPermissionDialog();
+                                    }
+                                })
                                 .start();
                         break;
                 }
@@ -265,48 +306,6 @@ public class FourPicturesChoose {
     //获取选中的图片list
     public ArrayList<String> getChosenImageList() {
         return imageList;
-    }
-
-    @PermissionYes(302)
-    private void getCamera(List<String> grantedPermissions) {
-        if(AndPermission.hasPermission(activity,grantedPermissions)){
-            goToTakePhoto();
-        }else{
-            showNoPermissionDialog();
-        }
-    }
-
-    @PermissionNo(302)
-    private void noCamera(List<String> grantedPermissions) {
-        showNoPermissionDialog();
-    }
-
-    @PermissionYes(303)
-    private void getExternal(List<String> grantedPermissions) {
-        if(AndPermission.hasPermission(activity,grantedPermissions)){
-            goToChooseImage();
-        }else {
-            showNoPermissionDialog();
-        }
-    }
-
-    @PermissionNo(303)
-    private void noExternal(List<String> grantedPermissions) {
-        showNoPermissionDialog();
-    }
-
-    @PermissionYes(304)
-    private void getExternalAndCamera(List<String> grantedPermissions) {
-        if(AndPermission.hasPermission(activity,grantedPermissions)){
-            goToChooseImage();
-        }else {
-            showNoPermissionDialog();
-        }
-    }
-
-    @PermissionNo(304)
-    private void noExternalAndCamera(List<String> grantedPermissions) {
-       showNoPermissionDialog();
     }
 
     private void showNoPermissionDialog(){

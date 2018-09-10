@@ -38,6 +38,7 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
     private int height;
     private ShowChooseMenu showChooseMenu;
     private SDImageLoader sdImageLoader;
+    private ItemClickListener itemClickListener;
     private SelectedViewClickListener selectedViewClickListener;//已选择的view的点击事件
 
     PublishImageGridVIewAdapter(Context context, List<String> mImageList, int maxCounts, int columnCount, int divide,ShowChooseMenu showChooseMenu) {
@@ -56,6 +57,9 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         sdImageLoader = new SDImageLoader();
     }
 
+    public void setItemClickListener(ItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
     private void deleteItem(int position) {
         mImageList.remove(position);
         notifyDataSetChanged();
@@ -113,6 +117,9 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(itemClickListener != null){
+                    itemClickListener.itemClick(position);
+                }
                 if (mImageList.size() != maxCounts && getCount() - 1 == position) {
                     DeviceUtils.closeKeyBoard((Activity) mContext);
                     showChooseMenu.show();
@@ -164,5 +171,9 @@ public class PublishImageGridVIewAdapter extends BaseAdapter {
     //加载本地图片
     public static void loadFileUrl(SimpleDraweeView sdv, String path) {
         sdv.setImageURI(Uri.parse("file://" + path));
+    }
+
+    public interface ItemClickListener{
+        void itemClick(int position);
     }
 }

@@ -10,9 +10,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 
+import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionNo;
-import com.yanzhenjie.permission.PermissionYes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -107,10 +106,24 @@ public class PhotoChoose {
             public void show() {
                 if (firstIsCamera) {
                     AndPermission.with(activity)
-                            .requestCode(302)
-                            .callback(PhotoChoose.this)
+                            .runtime()
                             .permission(Manifest.permission.CAMERA,
                                     Manifest.permission.READ_EXTERNAL_STORAGE)
+                            .onGranted(new Action<List<String>>() {
+                                @Override
+                                public void onAction(List<String> data) {
+                                    if (AndPermission.hasAlwaysDeniedPermission(activity, data)) {
+                                        goToChooseImage();
+                                    } else {
+                                        showNoPermissionDialog();
+                                    }
+                                }
+                            }).onDenied(new Action<List<String>>() {
+                        @Override
+                        public void onAction(List<String> data) {
+                            showNoPermissionDialog();
+                        }
+                    })
                             .start();
                 } else {
                     showPopupWindow();
@@ -120,6 +133,11 @@ public class PhotoChoose {
         myGridView.setAdapter(imageGridVIewAdapter);
     }
 
+    public void setItemClickListener(PublishImageGridVIewAdapter.ItemClickListener itemClickListener){
+        if(imageGridVIewAdapter != null){
+            imageGridVIewAdapter.setItemClickListener(itemClickListener);
+        }
+    }
     //弹出拍照、相册选择
     private void showPopupWindow() {
         if (activity == null) {
@@ -132,17 +150,45 @@ public class PhotoChoose {
                 switch (index) {
                     case 1:
                         AndPermission.with(activity)
-                                .requestCode(301)
-                                .callback(PhotoChoose.this)
+                                .runtime()
                                 .permission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .onGranted(new Action<List<String>>() {
+                                    @Override
+                                    public void onAction(List<String> data) {
+                                        if (AndPermission.hasAlwaysDeniedPermission(activity, data)) {
+                                            goToChooseImage();
+                                        } else {
+                                            showNoPermissionDialog();
+                                        }
+                                    }
+                                }).onDenied(new Action<List<String>>() {
+                            @Override
+                            public void onAction(List<String> data) {
+                                showNoPermissionDialog();
+                            }
+                        })
                                 .start();
                         break;
                     case 2:
                         AndPermission.with(activity)
-                                .requestCode(300)
-                                .callback(PhotoChoose.this)
+                                .runtime()
                                 .permission(Manifest.permission.CAMERA,
                                         Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .onGranted(new Action<List<String>>() {
+                                    @Override
+                                    public void onAction(List<String> data) {
+                                        if (AndPermission.hasAlwaysDeniedPermission(activity, data)) {
+                                            goToTakePhoto();
+                                        } else {
+                                            showNoPermissionDialog();
+                                        }
+                                    }
+                                }).onDenied(new Action<List<String>>() {
+                            @Override
+                            public void onAction(List<String> data) {
+                                showNoPermissionDialog();
+                            }
+                        })
                                 .start();
                         break;
                 }
@@ -233,49 +279,6 @@ public class PhotoChoose {
         mImageList.clear();
         mImageList.addAll(list);
         ((PublishImageGridVIewAdapter) myGridView.getAdapter()).notifyDataSetChanged();
-    }
-
-
-    @PermissionYes(300)
-    private void getCamera(List<String> grantedPermissions) {
-        if (AndPermission.hasPermission(activity, grantedPermissions)) {
-            goToTakePhoto();
-        } else {
-            showNoPermissionDialog();
-        }
-    }
-
-    @PermissionNo(300)
-    private void noCamera(List<String> grantedPermissions) {
-        showNoPermissionDialog();
-    }
-
-    @PermissionYes(301)
-    private void getExternal(List<String> grantedPermissions) {
-        if (AndPermission.hasPermission(activity, grantedPermissions)) {
-            goToChooseImage();
-        } else {
-            showNoPermissionDialog();
-        }
-    }
-
-    @PermissionNo(301)
-    private void noExternal(List<String> grantedPermissions) {
-        showNoPermissionDialog();
-    }
-
-    @PermissionYes(302)
-    private void getExternalAndCamera(List<String> grantedPermissions) {
-        if (AndPermission.hasPermission(activity, grantedPermissions)) {
-            goToChooseImage();
-        } else {
-            showNoPermissionDialog();
-        }
-    }
-
-    @PermissionNo(302)
-    private void noExternalAndCamera(List<String> grantedPermissions) {
-        showNoPermissionDialog();
     }
 
     private void showNoPermissionDialog() {
