@@ -34,6 +34,7 @@ public class ImagePagerActivity extends FragmentActivity {
     public static final String EXTRA_IMAGE_INDEX = "image_index";
     public static final String EXTRA_IMAGE_URLS = "image_urls";
     public static final String FROM_PHOTO_WALL = "FROM_PHOTO_WALL";
+
     public static final String CAN_SAVE = "CAN_SAVE";
     private ImageViewPager mPager;
     private TextView indicator;
@@ -85,6 +86,7 @@ public class ImagePagerActivity extends FragmentActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(STATE_POSITION, mPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
     }
 
     private class ImagePagerAdapter extends FragmentStatePagerAdapter {

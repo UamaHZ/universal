@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2014 nohana, Inc.
- * Copyright 2017 Zhihu Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package uama.hangzhou.image.album.internal.entity;
 
 import android.content.Context;
@@ -26,18 +10,17 @@ import android.support.annotation.Nullable;
 import uama.hangzhou.image.R;
 import uama.hangzhou.image.album.internal.loader.AlbumLoader;
 
-
 public class Album implements Parcelable {
-    public static final Creator< Album> CREATOR = new Creator< Album>() {
+    public static final Creator<Album> CREATOR = new Creator<Album>() {
         @Nullable
         @Override
-        public  Album createFromParcel(Parcel source) {
-            return new  Album(source);
+        public Album createFromParcel(Parcel source) {
+            return new Album(source);
         }
 
         @Override
-        public  Album[] newArray(int size) {
-            return new  Album[size];
+        public Album[] newArray(int size) {
+            return new Album[size];
         }
     };
     public static final String ALBUM_ID_ALL = String.valueOf(-1);
@@ -66,8 +49,8 @@ public class Album implements Parcelable {
      * Constructs a new {@link  Album} entity from the {@link Cursor}.
      * This method is not responsible for managing cursor resource, such as close, iterate, and so on.
      */
-    public static  Album valueOf(Cursor cursor) {
-        return new  Album(
+    public static Album valueOf(Cursor cursor) {
+        return new Album(
                 cursor.getString(cursor.getColumnIndex("bucket_id")),
                 cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA)),
                 cursor.getString(cursor.getColumnIndex("bucket_display_name")),

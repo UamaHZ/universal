@@ -1,3 +1,5 @@
+package uama.hangzhou.image.album.internal.ui;
+
 /*
  * Copyright 2017 Zhihu Inc.
  *
@@ -13,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uama.hangzhou.image.album.internal.ui;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -35,7 +35,6 @@ import uama.hangzhou.image.album.internal.model.SelectedItemCollection;
 import uama.hangzhou.image.album.internal.ui.adapter.AlbumMediaAdapter;
 import uama.hangzhou.image.album.internal.ui.widget.MediaGridInset;
 import uama.hangzhou.image.album.internal.utils.UIUtils;
-
 
 public class MediaSelectionFragment extends Fragment implements
         AlbumMediaCollection.AlbumMediaCallbacks, AlbumMediaAdapter.CheckStateListener,

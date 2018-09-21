@@ -60,6 +60,7 @@ public class GlideEngine implements ImageEngine {
                 .load(uri)
                 .override(resizeX, resizeY)
                 .priority(Priority.HIGH)
+                .fitCenter()
                 .into(imageView);
     }
 

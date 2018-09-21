@@ -35,6 +35,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
     private LoaderManager mLoaderManager;
     private AlbumCallbacks mCallbacks;
     private int mCurrentSelection;
+    private boolean mLoadFinished;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -42,6 +43,7 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
         if (context == null) {
             return null;
         }
+        mLoadFinished = false;
         return AlbumLoader.newInstance(context);
     }
 
@@ -52,7 +54,10 @@ public class AlbumCollection implements LoaderManager.LoaderCallbacks<Cursor> {
             return;
         }
 
-        mCallbacks.onAlbumLoad(data);
+        if (!mLoadFinished) {
+            mLoadFinished = true;
+            mCallbacks.onAlbumLoad(data);
+        }
     }
 
     @Override

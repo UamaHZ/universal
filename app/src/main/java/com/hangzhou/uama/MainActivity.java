@@ -60,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Matisse.from(MainActivity.this)
+//                        .choose(MimeType.ofImage())
+//                        .theme(R.style.Matisse_Dracula)
+//                        .countable(false)
+//                        .maxSelectable(9)
+//                        .originalEnable(true)
+//                        .maxOriginalSize(10)
+//                        .imageEngine(new PicassoEngine())
+//                        .forResult(100);
                 Matisse.from(MainActivity.this)
                         .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
                         .countable(true)
@@ -71,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                         .thumbnailScale(0.85f)
-                        .setSkip(true)
+//                        .setSkip(true)
                         .imageEngine(new GlideEngine())
                         .forResult(100);
             }
