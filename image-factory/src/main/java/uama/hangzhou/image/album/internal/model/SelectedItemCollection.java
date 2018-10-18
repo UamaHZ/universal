@@ -173,20 +173,25 @@ public class SelectedItemCollection {
 
             try {
                 cause = mContext.getResources().getQuantityString(
-                         R.plurals.error_over_count,
+                        R.plurals.error_over_count,
                         maxSelectable,
                         maxSelectable
                 );
             } catch (Resources.NotFoundException e) {
                 cause = mContext.getString(
-                         R.string.error_over_count,
+                        R.string.error_over_count,
+                        maxSelectable
+                );
+            } catch (NoClassDefFoundError e) {
+                cause = mContext.getString(
+                        R.string.error_over_count,
                         maxSelectable
                 );
             }
 
             return new IncapableCause(cause);
         } else if (typeConflict(item)) {
-            return new IncapableCause(mContext.getString( R.string.error_type_conflict));
+            return new IncapableCause(mContext.getString(R.string.error_type_conflict));
         }
 
         return PhotoMetadataUtils.isAcceptable(mContext, item);
