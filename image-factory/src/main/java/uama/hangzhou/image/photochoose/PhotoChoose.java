@@ -50,6 +50,7 @@ public class PhotoChoose {
 
     private int REQUEST_CODE_CHOOSE = -1;
     private int REQUEST_CODE_CAMERA = -1;
+    private boolean showCount = true;//checkbox里面显示数字
 
     /**
      * @param maxCounts   最大选择图片数量
@@ -208,11 +209,15 @@ public class PhotoChoose {
         activity.startActivityForResult(intent, REQUEST_CODE_CAMERA == -1 ? Constants.ONLY_TAKE_PHOTO : REQUEST_CODE_CAMERA);
     }
 
+    public void setShowCount(boolean bool){
+        showCount = bool;
+    }
+
     //选择照片
     private void goToChooseImage() {
         Matisse.from(activity)
                 .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.WEBP))
-                .countable(true)
+                .countable(showCount)
                 .capture(firstIsCamera)
                 .captureStrategy(
                         new CaptureStrategy(true, activity.getString(R.string.aplicationId) + ".provider"))

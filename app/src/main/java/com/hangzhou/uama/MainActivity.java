@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         myGridView = (MyGridView) findViewById(R.id.grid_view_publish_photo);
         photoChoose = new PhotoChoose(this, myGridView, 4,3,true);
         photoChoose.setCanSkip(true);
+        photoChoose.setShowCount(false);
         photoChoose.setRequestCode(1002,1100);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
 //                        .forResult(100);
                 Matisse.from(MainActivity.this)
                         .choose(MimeType.of(MimeType.JPEG,MimeType.PNG))
-                        .countable(true)
+                        .countable(false)
                         .capture(true)
                         .captureStrategy(
                                 new CaptureStrategy(true, BuildConfig.APPLICATION_ID+".provider"))
-                        .theme(R.style.Matisse_Mine)
+                        .theme(R.style.Matisse_Uama)
                         .maxSelectable(9)
                         .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)

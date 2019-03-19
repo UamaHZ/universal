@@ -18,7 +18,7 @@
         <item name="album.emptyView">@drawable/ic_empty_dracula</item>
         <item name="album.emptyView.textColor">@color/dracula_album_empty_view</item>
         <item name="item.placeholder">@color/dracula_item_placeholder</item>
-        <item name="item.checkCircle.backgroundColor">#00c66c</item>
+        <item name="item.checkCircle.backgroundColor">#ffad01</item>
         <item name="item.checkCircle.borderColor">@color/dracula_item_checkCircle_borderColor</item>
         <item name="page.bg">@color/dracula_page_bg</item>
         <item name="bottomToolbar.bg">#ffffff</item>

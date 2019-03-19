@@ -45,7 +45,7 @@ public class FourPicturesChoose {
     private String mNewImageFilePath;
     private int firstDefaultBg = -1, secondDefaultBg = -1;//第一张和第二张的默认背景
     private boolean firstIsCamera = true;
-
+    private boolean showCount = true;//checkbox里面显示数字
     private boolean canSkip = true;//是否有跳过
 
     public FourPicturesChoose(Activity activity, SparseArray<ImageView> nImageViewList) {
@@ -216,6 +216,9 @@ public class FourPicturesChoose {
         });
     }
 
+    public void setShowCount(boolean bool){
+        showCount = bool;
+    }
 
     //刷新选中的图片
     private void upDateImageGroup() {
@@ -244,7 +247,7 @@ public class FourPicturesChoose {
     private void goToChooseImage() {
         Matisse.from(activity)
                 .choose(MimeType.of(MimeType.JPEG, MimeType.PNG,MimeType.WEBP))
-                .countable(true)
+                .countable(showCount)
                 .capture(firstIsCamera)
                 .captureStrategy(
                         new CaptureStrategy(true, activity.getString(R.string.aplicationId)+".provider"))
