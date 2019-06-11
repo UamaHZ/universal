@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Uama Universal</string>
-    <string name="aplicationId">com.hangzhou.uama</string>
+    <string name="applicationId">com.hangzhou.uama</string>
 </resources>

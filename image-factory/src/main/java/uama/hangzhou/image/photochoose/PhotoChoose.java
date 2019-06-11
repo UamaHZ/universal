@@ -220,7 +220,7 @@ public class PhotoChoose {
                 .countable(showCount)
                 .capture(firstIsCamera)
                 .captureStrategy(
-                        new CaptureStrategy(true, activity.getString(R.string.aplicationId) + ".provider"))
+                        new CaptureStrategy(true, activity.getString(R.string.applicationId) + ".provider"))
                 .theme(R.style.Matisse_Uama)
                 .maxSelectable(maxCounts - mImageList.size())
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.uimage_grid_expected_size))

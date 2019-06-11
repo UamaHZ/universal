@@ -250,7 +250,7 @@ public class FourPicturesChoose {
                 .countable(showCount)
                 .capture(firstIsCamera)
                 .captureStrategy(
-                        new CaptureStrategy(true, activity.getString(R.string.aplicationId)+".provider"))
+                        new CaptureStrategy(true, activity.getString(R.string.applicationId)+".provider"))
                 .theme(R.style.Matisse_Uama)
                 .maxSelectable(4 - imageList.size())
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.uimage_grid_expected_size))

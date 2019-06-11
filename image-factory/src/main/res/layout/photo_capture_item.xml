@@ -18,7 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-   >
+    android:background="?item.placeholder"
+    android:foreground="?selectableItemBackground">
 
     <TextView
         android:id="@+id/hint"
@@ -29,7 +30,7 @@
         android:drawableTop="@drawable/ic_photo_camera_white_24dp"
         android:gravity="center"
         android:text="@string/photo_grid_capture"
-        android:textColor="@color/uimage_font_main"
+        android:textColor="?capture.textColor"
         android:textSize="14sp"/>
 
 </uama.hangzhou.image.album.internal.ui.widget.SquareFrameLayout>
