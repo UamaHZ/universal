@@ -21,6 +21,7 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':image-factory')
+    api project(':eagle-eye')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation('com.facebook.fresco:fresco:0.11.0') {
         exclude group: 'com.android.support'

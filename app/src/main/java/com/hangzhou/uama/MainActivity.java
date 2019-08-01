@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fresco.initialize(MainActivity.this);
         setContentView(R.layout.activity_main);
+
         init();
+
     }
 
     private void init() {
