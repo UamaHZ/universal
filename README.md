@@ -2,9 +2,9 @@
 ## *image-factory*
 <pre><code>compile 'com.uama.widget:image-factory:XXX'</code></pre>
 
-版本     | 更新记录
--------- | -----
-3.2.7  | 1.修改image-factory provider
+日期   |版本     | 更新记录
+-------|-------- | -----
+2019-08-01   |3.2.7  | 1.修改image-factory provider
 
 1. 需要文件读取权限
 2. 需要相机权限
@@ -39,9 +39,9 @@
 <pre><code>compile 'com.uama.widget:eagle-eye:XXX'</code></pre>
 
 
-版本     | 更新记录
--------- | -----
-1.2.8  | 1.升级萤石云版本为4.8.4
-1.3.4.2 | 1.targetSdkVersion 22 >> 26 <br> 2.萤石云 4.8.4 >> 4.8.8
+日期    |版本     | 更新记录
+-------|-------- | --------
+2019-07-13  |1.2.8  | 1.升级萤石云版本为4.8.4
+2019-08-05  | 1.3.4.2 | 1.targetSdkVersion 22 >> 26 <br> 2.萤石云 4.8.4 >> 4.8.8
         
 
