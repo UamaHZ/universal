@@ -1,6 +1,11 @@
 # ***UamaUniversal***
 ## *image-factory*
-最新版本：compile 'com.uama.widget:image-factory:1.2.7'
+<pre><code>compile 'com.uama.widget:image-factory:XXX'</code></pre>
+
+版本     | 更新记录
+-------- | -----
+3.2.7  | 1.修改image-factory provider
+
 1. 需要文件读取权限
 2. 需要相机权限
 ### ① 增加图片查看器 ImagePagerActivity
@@ -29,5 +34,14 @@
 ## *uama-utils*
 ### ① 新增通用沉浸式工具类
 
+## *eagle-eye*
 
+<pre><code>compile 'com.uama.widget:eagle-eye:XXX'</code></pre>
+
+
+版本     | 更新记录
+-------- | -----
+1.2.8  | 1.升级萤石云版本为4.8.4
+1.3.4.2 | 1.targetSdkVersion 22 >> 26 <br> 2.萤石云 4.8.4 >> 4.8.8
+        
 
