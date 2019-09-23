@@ -109,7 +109,8 @@ public class PhotoChoose {
                     AndPermission.with(activity)
                             .runtime()
                             .permission(Manifest.permission.CAMERA,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    Manifest.permission.READ_EXTERNAL_STORAGE
+                                    , Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             .onGranted(new Action<List<String>>() {
                                 @Override
                                 public void onAction(List<String> data) {
@@ -134,11 +135,12 @@ public class PhotoChoose {
         myGridView.setAdapter(imageGridVIewAdapter);
     }
 
-    public void setItemClickListener(PublishImageGridVIewAdapter.ItemClickListener itemClickListener){
-        if(imageGridVIewAdapter != null){
+    public void setItemClickListener(PublishImageGridVIewAdapter.ItemClickListener itemClickListener) {
+        if (imageGridVIewAdapter != null) {
             imageGridVIewAdapter.setItemClickListener(itemClickListener);
         }
     }
+
     //弹出拍照、相册选择
     private void showPopupWindow() {
         if (activity == null) {
@@ -152,7 +154,8 @@ public class PhotoChoose {
                     case 1:
                         AndPermission.with(activity)
                                 .runtime()
-                                .permission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                                .permission(Manifest.permission.READ_EXTERNAL_STORAGE,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 .onGranted(new Action<List<String>>() {
                                     @Override
                                     public void onAction(List<String> data) {
@@ -209,7 +212,7 @@ public class PhotoChoose {
         activity.startActivityForResult(intent, REQUEST_CODE_CAMERA == -1 ? Constants.ONLY_TAKE_PHOTO : REQUEST_CODE_CAMERA);
     }
 
-    public void setShowCount(boolean bool){
+    public void setShowCount(boolean bool) {
         showCount = bool;
     }
 
@@ -220,7 +223,7 @@ public class PhotoChoose {
                 .countable(showCount)
                 .capture(firstIsCamera)
                 .captureStrategy(
-                        new CaptureStrategy(true, activity.getString(R.string.applicationId) + ".provider"))
+                        new CaptureStrategy(true, activity.getApplication().getPackageName() + ".provider"))
                 .theme(R.style.Matisse_Uama)
                 .maxSelectable(maxCounts - mImageList.size())
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.uimage_grid_expected_size))
