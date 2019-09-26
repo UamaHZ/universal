@@ -25,6 +25,7 @@ import uama.hangzhou.image.album.internal.entity.CaptureStrategy;
 import uama.hangzhou.image.constant.Constants;
 import uama.hangzhou.image.listener.SelectedViewClickListener;
 import uama.hangzhou.image.util.CacheFileUtils;
+import uama.hangzhou.image.util.PermissionUtils;
 import uama.hangzhou.image.widget.MyGridView;
 
 import static android.app.Activity.RESULT_OK;
@@ -292,10 +293,10 @@ public class PhotoChoose {
     private void showNoPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setMessage("无法使用此功能，请检查是否已经打开摄像头或文件读取权限。")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        PermissionUtils.gotoMIUIPermission(activity);
                     }
                 }).setCancelable(false);
         builder.show();
